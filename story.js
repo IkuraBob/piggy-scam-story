@@ -7,7 +7,8 @@
 //    media    path to the real file once it exists, e.g. "media/c1.mp4"
 //             or "media/c1_safe.png". Leave null -> animated placeholder.
 //    scene    placeholder look: { emoji, bg, tag }
-//    lines    subtitles / dialogue: { who, text }
+//    lines    subtitles / dialogue: { who, text, t? } (t = seconds)
+//             Text fields use { en, zh }; branching fields stay unchanged.
 //    phone    HTML overlay (AI video can't render readable text):
 //             { kind: "sms"|"chat"|"call"|"doc"|"scan", from, text }
 //    enter    effect applied on arrival: { money, lost, recovered }
@@ -25,252 +26,271 @@ const START_MONEY = 8000;
 
 const STORY = {
   intro: {
-    chapter: "Prologue", title: "Meet Piggy", kind: "video", media: null, pos: [0, 1],
-    scene: { emoji: "🧳🏠🐷", bg: "linear-gradient(135deg,#ffd6e7,#ffe9c7)", tag: "Move-in day · Hall room" },
+    chapter: { en: "Prologue", zh: "序章" }, title: { en: "Meet Piggy", zh: "认识 Piggy" }, kind: "video", media: null, pos: [0, 1],
+    scene: { emoji: "🧳🏠🐷", bg: "linear-gradient(135deg,#ffd6e7,#ffe9c7)", tag: { en: "Move-in day · Hall room", zh: "搬入宿舍 · 房间" } },
     lines: [
-      { who: "Piggy", text: "Hi. I'm Piggy. Inside me: HK$8,000 — Mia's ENTIRE semester of living money." },
-      { who: "Mia", text: "New city, new uni, new me. What could possibly go wrong?" },
-      { who: "Piggy", text: "...Famous last words." }
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Hi. I'm Piggy. Inside me: HK$8,000 — Mia's ENTIRE semester of living money.", zh: "嗨，我是 Piggy。我肚子里装着港币 8,000 元——Mia 整个学期的生活费。" } },
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "New city, new uni, new me. What could possibly go wrong?", zh: "新城市，新大学，全新的我。能出什么问题呢？" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "...Famous last words.", zh: "……这话听着就不妙。" } }
     ],
     next: "c1"
   },
 
   // ---------------- Chapter 1 · Task scam ----------------
   c1: {
-    chapter: "Ch.1 The Dream Job", title: "A Text at Midnight", kind: "video", media: null, pos: [1, 1],
-    scene: { emoji: "🛏️📱✨", bg: "linear-gradient(135deg,#2b2d5c,#6b5fa8)", tag: "Day 3 · 11:47 PM" },
-    phone: { kind: "sms", from: "+852 5•••• ••••", text: "Hi dear 😊 Part-time job! Like videos from home, earn HK$800/day. No experience needed. Add Kelly on WhatsApp — only 5 spots left!" },
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "A Text at Midnight", zh: "午夜短信" }, kind: "video", media: null, pos: [1, 1],
+    scene: { emoji: "🛏️📱✨", bg: "linear-gradient(135deg,#2b2d5c,#6b5fa8)", tag: { en: "Day 3 · 11:47 PM", zh: "第 3 天 · 晚上 11:47" } },
+    phone: { kind: "sms", from: { en: "+852 5•••• ••••", zh: "+852 5•••• ••••" }, text: { en: "Hi dear 😊 Part-time job! Like videos from home, earn HK$800/day. No experience needed. Add Kelly on WhatsApp — only 5 spots left!", zh: "亲 😊 招兼职！在家给视频点赞，日赚港币 800 元，无需经验。WhatsApp 加 Kelly——只剩 5 个名额！" } },
     lines: [
-      { who: "Mia", text: "HK$800 a DAY?! That's rent money!" },
-      { who: "Piggy", text: "That's also... suspiciously a lot of money for pressing a heart button." }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "HK$800 a DAY?! That's rent money!", zh: "一天港币 800 元？！够交房租了！" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "That's also... suspiciously a lot of money for pressing a heart button.", zh: "只是点个爱心就赚这么多……可疑得很。" } }
     ],
-    redFlags: ["A stranger offers you a job out of nowhere", "Pay is way too high for too little work", "Fake urgency: \"only 5 spots left\"", "Pushes you to a private chat app"],
+    redFlags: [{ en: "A stranger offers you a job out of nowhere", zh: "陌生人主动给你介绍工作" }, { en: "Pay is way too high for too little work", zh: "工作量很少，报酬却高得离谱" }, { en: "Fake urgency: \"only 5 spots left\"", zh: "“只剩 5 个名额”制造虚假紧迫感" }, { en: "Pushes you to a private chat app", zh: "催你转到私人聊天软件" }],
     choices: [
-      { label: "Add \"Kelly from HR\" on WhatsApp", to: "c1_hook", safe: false },
-      { label: "Delete it & report the number", to: "c1_safe", safe: true }
+      { label: { en: "Add \"Kelly from HR\" on WhatsApp", zh: "在 WhatsApp 加“人事部 Kelly”" }, to: "c1_hook", safe: false },
+      { label: { en: "Delete it & report the number", zh: "删除短信并举报号码" }, to: "c1_safe", safe: true }
     ],
     timeoutTo: "c1_hook"
   },
   c1_safe: {
-    chapter: "Ch.1 The Dream Job", title: "Blocked!", kind: "image", media: null, pos: [2, 0],
-    scene: { emoji: "🛡️🐷💖", bg: "linear-gradient(135deg,#c8f7dc,#e6fff2)", tag: "Day 3 · 11:49 PM" },
-    phone: { kind: "scan", from: "Scameter check", text: "⚠️ HIGH RISK — number reported for job scams" },
-    lines: [{ who: "Piggy", text: "Look at you! Delete, block, report. I'm so proud I could cry coins." }],
-    flag: "Ignored a too-good-to-be-true job",
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "Blocked!", zh: "已拉黑！" }, kind: "image", media: null, pos: [2, 0],
+    scene: { emoji: "🛡️🐷💖", bg: "linear-gradient(135deg,#c8f7dc,#e6fff2)", tag: { en: "Day 3 · 11:49 PM", zh: "第 3 天 · 晚上 11:49" } },
+    phone: { kind: "scan", from: { en: "Scameter check", zh: "防骗视伏器查询" }, text: { en: "⚠️ HIGH RISK — number reported for job scams", zh: "⚠️ 高风险——该号码曾被举报涉及求职诈骗" } },
+    lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "Look at you! Delete, block, report. I'm so proud I could cry coins.", zh: "看看你！删除、拉黑、举报。我骄傲得都快哭出硬币了。" } }],
+    flag: { en: "Ignored a too-good-to-be-true job", zh: "识破好得不真实的工作邀约" },
     next: "c2"
   },
   c1_hook: {
-    chapter: "Ch.1 The Dream Job", title: "The Bait", kind: "video", media: null, pos: [2, 2],
-    scene: { emoji: "👍💸🎣", bg: "linear-gradient(135deg,#ffe3a3,#ffc2d1)", tag: "Day 3 · 11:58 PM" },
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "The Bait", zh: "诱饵" }, kind: "video", media: null, pos: [2, 2],
+    scene: { emoji: "👍💸🎣", bg: "linear-gradient(135deg,#ffe3a3,#ffc2d1)", tag: { en: "Day 3 · 11:58 PM", zh: "第 3 天 · 晚上 11:58" } },
     enter: { money: +50 },
-    phone: { kind: "chat", from: "Kelly from HR 💼", text: "You're a star 💕 HK$50 sent! Now join our VIP Task Group: deposit HK$1,000, earn HK$3,000 commission tonight!" },
+    phone: { kind: "chat", from: { en: "Kelly from HR 💼", zh: "人事部 Kelly 💼" }, text: { en: "You're a star 💕 HK$50 sent! Now join our VIP Task Group: deposit HK$1,000, earn HK$3,000 commission tonight!", zh: "你太棒了 💕 港币 50 元已到账！现在加入 VIP 任务群：先存港币 1,000 元，今晚赚港币 3,000 元佣金！" } },
     lines: [
-      { who: "Mia", text: "Wait — she actually paid me fifty dollars!" },
-      { who: "Piggy", text: "She... did? Okay, maybe she's legit?" }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Wait — she actually paid me fifty dollars!", zh: "等等——她真的给了我五十块！" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "She... did? Okay, maybe she's legit?", zh: "她……真给了？难道是正规的？" } }
     ],
-    redFlags: ["A small real payout first — classic bait to build trust", "You must PAY to EARN", "\"Commission tonight\" — rushing you again"],
+    redFlags: [{ en: "A small real payout first — classic bait to build trust", zh: "先付一小笔真钱——用诱饵建立信任" }, { en: "You must PAY to EARN", zh: "想赚钱，却得先付钱" }, { en: "\"Commission tonight\" — rushing you again", zh: "“今晚拿佣金”——又在催你" }],
     choices: [
-      { label: "Transfer HK$1,000 — easy money!", to: "c1_trap", safe: false },
-      { label: "Check the number on Scameter first", to: "c1_check", safe: true }
+      { label: { en: "Transfer HK$1,000 — easy money!", zh: "转港币 1,000 元——这钱真好赚！" }, to: "c1_trap", safe: false },
+      { label: { en: "Check the number on Scameter first", zh: "先用防骗视伏器查号码" }, to: "c1_check", safe: true }
     ],
     timeoutTo: "c1_trap"
   },
   c1_check: {
-    chapter: "Ch.1 The Dream Job", title: "37 Reports", kind: "image", media: null, pos: [3, 1],
-    scene: { emoji: "🔍🚨🐷", bg: "linear-gradient(135deg,#d7ecff,#f0f7ff)", tag: "Day 4 · 12:03 AM" },
-    phone: { kind: "scan", from: "Scameter check", text: "⚠️ Reported 37 times — Employment fraud" },
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "37 Reports", zh: "37 次举报" }, kind: "image", media: null, pos: [3, 1],
+    scene: { emoji: "🔍🚨🐷", bg: "linear-gradient(135deg,#d7ecff,#f0f7ff)", tag: { en: "Day 4 · 12:03 AM", zh: "第 4 天 · 凌晨 12:03" } },
+    phone: { kind: "scan", from: { en: "Scameter check", zh: "防骗视伏器查询" }, text: { en: "⚠️ Reported 37 times — Employment fraud", zh: "⚠️ 已被举报 37 次——求职诈骗" } },
     lines: [
-      { who: "Mia", text: "She paid me fifty dollars... to steal a thousand." },
-      { who: "Piggy", text: "Keep the fifty. Block her." }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "She paid me fifty dollars... to steal a thousand.", zh: "她给我五十块……是为了骗走一千块。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Keep the fifty. Block her.", zh: "五十块留下。把她拉黑。" } }
     ],
-    flag: "Checked before paying",
+    flag: { en: "Checked before paying", zh: "付款前先核查" },
     next: "c2"
   },
   c1_trap: {
-    chapter: "Ch.1 The Dream Job", title: "The 'Tax'", kind: "video", media: null, pos: [3, 2],
-    scene: { emoji: "💸😵🐷", bg: "linear-gradient(135deg,#ffb3b3,#ffd9c2)", tag: "Day 4 · 12:20 AM" },
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "The 'Tax'", zh: "所谓的“税”" }, kind: "video", media: null, pos: [3, 2],
+    scene: { emoji: "💸😵🐷", bg: "linear-gradient(135deg,#ffb3b3,#ffd9c2)", tag: { en: "Day 4 · 12:20 AM", zh: "第 4 天 · 凌晨 12:20" } },
     enter: { money: -1000, lost: true },
-    phone: { kind: "chat", from: "Kelly from HR 💼", text: "Congrats! Commission HK$3,000 🎉 To withdraw, pay the account activation tax: HK$2,000." },
+    phone: { kind: "chat", from: { en: "Kelly from HR 💼", zh: "人事部 Kelly 💼" }, text: { en: "Congrats! Commission HK$3,000 🎉 To withdraw, pay the account activation tax: HK$2,000.", zh: "恭喜！佣金港币 3,000 元 🎉 提现前请先支付账户激活税：港币 2,000 元。" } },
     lines: [
-      { who: "Mia", text: "Tax?! ...but if I stop now, I lose the thousand." },
-      { who: "Piggy", text: "*faints* That's EXACTLY what they want you to think!" }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Tax?! ...but if I stop now, I lose the thousand.", zh: "税？！……可我现在停手，那一千块就没了。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "*faints* That's EXACTLY what they want you to think!", zh: "*晕倒* 他们就是想让你这么想！" } }
     ],
-    redFlags: ["The 'balance' on their site is just a number they typed", "New fees keep appearing — that's the sunk-cost trap"],
+    redFlags: [{ en: "The 'balance' on their site is just a number they typed", zh: "网站上的“余额”只是他们输入的数字" }, { en: "New fees keep appearing — that's the sunk-cost trap", zh: "新费用接连出现——这就是沉没成本陷阱" }],
     choices: [
-      { label: "Pay the HK$2,000 \"tax\" to get it all back", to: "c1_recover", safe: false, effect: { money: -2000, lost: true } },
-      { label: "Stop. Call 18222 now.", to: "c1_recover", safe: true }
+      { label: { en: "Pay the HK$2,000 \"tax\" to get it all back", zh: "付港币 2,000 元“税”，把钱全拿回来" }, to: "c1_recover", safe: false, effect: { money: -2000, lost: true } },
+      { label: { en: "Stop. Call 18222 now.", zh: "停手。马上打 18222。" }, to: "c1_recover", safe: true }
     ],
     timeoutTo: "c1_recover"
   },
   c1_recover: {
-    chapter: "Ch.1 The Dream Job", title: "Calling 18222", kind: "image", media: null, pos: [4, 2],
-    scene: { emoji: "☎️🩹🐷", bg: "linear-gradient(135deg,#e3dcff,#f6f2ff)", tag: "Day 4 · 12:31 AM" },
-    phone: { kind: "call", from: "Anti-Scam Helpline 18222", text: "Connected" },
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "Calling 18222", zh: "拨打 18222" }, kind: "image", media: null, pos: [4, 2],
+    scene: { emoji: "☎️🩹🐷", bg: "linear-gradient(135deg,#e3dcff,#f6f2ff)", tag: { en: "Day 4 · 12:31 AM", zh: "第 4 天 · 凌晨 12:31" } },
+    phone: { kind: "call", from: { en: "Anti-Scam Helpline 18222", zh: "防骗易热线 18222" }, text: { en: "Connected", zh: "已接通" } },
     lines: [
-      { who: "Helpline", text: "This is a task scam. The 'commission' never existed. Stop paying, keep your chat records, and report it — we'll try to intercept the transfer." },
-      { who: "Mia", text: "Lesson: losing money once is bad. Chasing it is worse." }
+      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "This is a task scam. The 'commission' never existed. Stop paying, keep your chat records, and report it — we'll try to intercept the transfer.", zh: "这是刷单诈骗。所谓的“佣金”从未存在。停止付款，保留聊天记录并报案——我们会尝试拦截转账。" } },
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Lesson: losing money once is bad. Chasing it is worse.", zh: "学到了：亏一次钱已经够糟，为了追回来继续付钱更糟。" } }
     ],
-    flag: "Stopped the sunk-cost trap & reported",
+    flag: { en: "Stopped the sunk-cost trap & reported", zh: "停止追加付款并报案" },
     next: "c2"
   },
 
   // ---------------- Chapter 2 · Fake officials ----------------
   c2: {
-    chapter: "Ch.2 The Officer Calls", title: "Top Secret", kind: "video", media: null, pos: [5, 1],
-    scene: { emoji: "📞👮📄", bg: "linear-gradient(135deg,#9fb8d9,#d8e3f2)", tag: "Week 2 · 9:15 AM" },
-    phone: { kind: "doc", from: "Video call · 'Officer Wang'", text: "ARREST WARRANT\nSuspect: MIA CHEN\nCase: Cross-border money laundering" },
+    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Top Secret", zh: "绝对保密" }, kind: "video", media: null, pos: [5, 1],
+    scene: { emoji: "📞👮📄", bg: "linear-gradient(135deg,#9fb8d9,#d8e3f2)", tag: { en: "Week 2 · 9:15 AM", zh: "第 2 周 · 上午 9:15" } },
+    phone: { kind: "doc", from: { en: "Video call · 'Officer Wang'", zh: "视频通话 · “王警官”" }, text: { en: "ARREST WARRANT\nSuspect: MIA CHEN\nCase: Cross-border money laundering", zh: "通缉令\n嫌疑人：MIA CHEN\n案由：跨境洗钱" } },
     lines: [
-      { who: "Recording", text: "This is HK Express Courier. Your parcel to Shanghai contains 12 fake passports. Press 1 to speak to the Mainland Public Security Bureau." },
-      { who: "Wang", text: "This case is TOP SECRET. Tell anyone — even your roommate — and you'll be charged too." }
+      { who: { en: "Recording", zh: "录音" }, text: { en: "This is HK Express Courier. Your parcel to Shanghai contains 12 fake passports. Press 1 to speak to the Mainland Public Security Bureau.", zh: "这里是 HK Express Courier。你寄往上海的包裹内有 12 本假护照。请按 1 转接内地公安局。" } },
+      { who: { en: "Wang", zh: "王警官" }, text: { en: "This case is TOP SECRET. Tell anyone — even your roommate — and you'll be charged too.", zh: "本案绝对保密。告诉任何人——包括室友——你也会被起诉。" } }
     ],
-    redFlags: ["A 'courier' call that transfers you to 'police'", "A warrant shown over video call", "Demands secrecy — don't tell anyone", "Mainland officers don't handle cases by phone in Hong Kong"],
+    redFlags: [{ en: "A 'courier' call that transfers you to 'police'", zh: "“快递公司”来电转接到“公安”" }, { en: "A warrant shown over video call", zh: "通过视频通话出示通缉令" }, { en: "Demands secrecy — don't tell anyone", zh: "要求保密，不许告诉任何人" }, { en: "Mainland officers don't handle cases by phone in Hong Kong", zh: "内地执法人员不会通过电话在香港办案" }],
     choices: [
-      { label: "Hang up & call 18222", to: "c2_safe", safe: true },
-      { label: "Cooperate quietly to clear my name", to: "c2_deep", safe: false }
+      { label: { en: "Hang up & call 18222", zh: "挂断电话并拨打 18222" }, to: "c2_safe", safe: true },
+      { label: { en: "Cooperate quietly to clear my name", zh: "悄悄配合，证明自己清白" }, to: "c2_deep", safe: false }
     ],
     timeoutTo: "c2_deep"
   },
   c2_safe: {
-    chapter: "Ch.2 The Officer Calls", title: "Hung Up", kind: "image", media: null, pos: [6, 0],
-    scene: { emoji: "📵😎🐷", bg: "linear-gradient(135deg,#c8f7dc,#e6fff2)", tag: "Week 2 · 9:20 AM" },
+    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Hung Up", zh: "挂断了" }, kind: "image", media: null, pos: [6, 0],
+    scene: { emoji: "📵😎🐷", bg: "linear-gradient(135deg,#c8f7dc,#e6fff2)", tag: { en: "Week 2 · 9:20 AM", zh: "第 2 周 · 上午 9:20" } },
     lines: [
-      { who: "Helpline", text: "Real police never ask you to keep it secret, transfer money, or show a warrant by video call." },
-      { who: "Jo", text: "Again?? Those guys call me every month." }
+      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "Real police never ask you to keep it secret, transfer money, or show a warrant by video call.", zh: "真正的警察不会要求你保密、转账，或通过视频通话出示通缉令。" } },
+      { who: { en: "Jo", zh: "Jo" }, text: { en: "Again?? Those guys call me every month.", zh: "又来？？这些人每个月都给我打电话。" } }
     ],
-    flag: "Hung up on a fake official",
+    flag: { en: "Hung up on a fake official", zh: "挂断假冒执法人员的来电" },
     next: "c3"
   },
   c2_deep: {
-    chapter: "Ch.2 The Officer Calls", title: "The 'Safety Account'", kind: "video", media: null, pos: [6, 2],
-    scene: { emoji: "👮🏨🔒", bg: "linear-gradient(135deg,#7f8fb3,#b9c3db)", tag: "Week 2 · 10:02 AM" },
+    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "The 'Safety Account'", zh: "所谓的“安全账户”" }, kind: "video", media: null, pos: [6, 2],
+    scene: { emoji: "👮🏨🔒", bg: "linear-gradient(135deg,#7f8fb3,#b9c3db)", tag: { en: "Week 2 · 10:02 AM", zh: "第 2 周 · 上午 10:02" } },
     lines: [
-      { who: "Wang", text: "To prove your innocence, transfer your funds to our 'safety supervision account'." },
-      { who: "Wang", text: "Then check into a hotel ALONE. Turn off your phone to your family." },
-      { who: "Piggy", text: "Mia... why is a policeman asking for ME?" }
+      { who: { en: "Wang", zh: "王警官" }, text: { en: "To prove your innocence, transfer your funds to our 'safety supervision account'.", zh: "要证明清白，请把资金转入我们的“安全监管账户”。" } },
+      { who: { en: "Wang", zh: "王警官" }, text: { en: "Then check into a hotel ALONE. Turn off your phone to your family.", zh: "然后独自入住酒店。不要让家人联系到你的手机。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Mia... why is a policeman asking for ME?", zh: "Mia……警察为什么会想要我？" } }
     ],
-    redFlags: ["Police never hold your money in a 'safety account'", "Isolating you from family and friends", "Fear + secrecy = scam"],
+    redFlags: [{ en: "Police never hold your money in a 'safety account'", zh: "警方不会用“安全账户”保管你的钱" }, { en: "Isolating you from family and friends", zh: "让你与亲友隔绝" }, { en: "Fear + secrecy = scam", zh: "恐惧加保密，就是骗局" }],
     choices: [
-      { label: "Do it — pack a bag for the hotel", to: "c2_door", safe: false },
-      { label: "Ask to meet at a real police station instead", to: "c2_crack", safe: true }
+      { label: { en: "Do it — pack a bag for the hotel", zh: "照做——收拾行李去酒店" }, to: "c2_door", safe: false },
+      { label: { en: "Ask to meet at a real police station instead", zh: "要求改到真正的警署见面" }, to: "c2_crack", safe: true }
     ],
     timeoutTo: "c2_door"
   },
   c2_crack: {
-    chapter: "Ch.2 The Officer Calls", title: "Vibe Check Failed", kind: "image", media: null, pos: [7, 1],
-    scene: { emoji: "😡📴🐷", bg: "linear-gradient(135deg,#ffe0b3,#fff3e0)", tag: "Week 2 · 10:05 AM" },
+    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Vibe Check Failed", zh: "露馅了" }, kind: "image", media: null, pos: [7, 1],
+    scene: { emoji: "😡📴🐷", bg: "linear-gradient(135deg,#ffe0b3,#fff3e0)", tag: { en: "Week 2 · 10:05 AM", zh: "第 2 周 · 上午 10:05" } },
     lines: [
-      { who: "Wang", text: "You DARE question me?! *click*" },
-      { who: "Mia", text: "Real police would WANT me at a police station." },
-      { who: "Piggy", text: "Officer Wang just failed the vibe check." }
+      { who: { en: "Wang", zh: "王警官" }, text: { en: "You DARE question me?! *click*", zh: "你敢质疑我？！*挂断*" } },
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Real police would WANT me at a police station.", zh: "真正的警察应该巴不得我去警署。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Officer Wang just failed the vibe check.", zh: "王警官这下露馅了。" } }
     ],
-    flag: "Asked a question a scammer can't answer",
+    flag: { en: "Asked a question a scammer can't answer", zh: "提出骗子答不上来的问题" },
     next: "c3"
   },
   c2_door: {
-    chapter: "Ch.2 The Officer Calls", title: "Midnight Suitcase", kind: "video", media: null, pos: [7, 2],
-    scene: { emoji: "🧳🚪👀", bg: "linear-gradient(135deg,#3b2f63,#7a5a9e)", tag: "Week 2 · 11:58 PM" },
+    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Midnight Suitcase", zh: "午夜行李箱" }, kind: "video", media: null, pos: [7, 2],
+    scene: { emoji: "🧳🚪👀", bg: "linear-gradient(135deg,#3b2f63,#7a5a9e)", tag: { en: "Week 2 · 11:58 PM", zh: "第 2 周 · 晚上 11:58" } },
     enter: { money: -3000, lost: true },
     lines: [
-      { who: "Narrator", text: "Mia has already transferred HK$3,000 'for verification'." },
-      { who: "Wang (earpiece)", text: "Say nothing. Walk." },
-      { who: "Jo", text: "Where are you going with a suitcase at midnight??" }
+      { who: { en: "Narrator", zh: "旁白" }, text: { en: "Mia has already transferred HK$3,000 'for verification'.", zh: "Mia 已经转出港币 3,000 元“验资费”。" } },
+      { who: { en: "Wang (earpiece)", zh: "王警官（耳机里）" }, text: { en: "Say nothing. Walk.", zh: "什么都别说。走。" } },
+      { who: { en: "Jo", zh: "Jo" }, text: { en: "Where are you going with a suitcase at midnight??", zh: "大半夜拖着行李箱，你要去哪？？" } }
     ],
-    redFlags: ["You're being told to lie to people who care about you", "This is how 'virtual kidnapping' starts"],
+    redFlags: [{ en: "You're being told to lie to people who care about you", zh: "有人让你欺骗关心你的人" }, { en: "This is how 'virtual kidnapping' starts", zh: "“虚拟绑架”就是这样开始的" }],
     choices: [
-      { label: "Tell Jo everything", to: "c2_rescue", safe: true },
-      { label: "Lie: \"Just a sleepover.\"", to: "end_dark", safe: false }
+      { label: { en: "Tell Jo everything", zh: "把一切告诉 Jo" }, to: "c2_rescue", safe: true },
+      { label: { en: "Lie: \"Just a sleepover.\"", zh: "撒谎：“去朋友家过夜。”" }, to: "end_dark", safe: false }
     ],
     timeoutTo: "end_dark"
   },
   c2_rescue: {
-    chapter: "Ch.2 The Officer Calls", title: "Nosy Roommate Saves the Day", kind: "video", media: null, pos: [8, 2],
-    scene: { emoji: "🙋‍♀️☎️🐷", bg: "linear-gradient(135deg,#d6f5ff,#effbff)", tag: "Week 3 · 12:04 AM" },
+    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Nosy Roommate Saves the Day", zh: "多管闲事的室友救了场" }, kind: "video", media: null, pos: [8, 2],
+    scene: { emoji: "🙋‍♀️☎️🐷", bg: "linear-gradient(135deg,#d6f5ff,#effbff)", tag: { en: "Week 3 · 12:04 AM", zh: "第 3 周 · 凌晨 12:04" } },
     enter: { money: +3000, recovered: true },
-    phone: { kind: "call", from: "Anti-Scam Helpline 18222", text: "Connected" },
+    phone: { kind: "call", from: { en: "Anti-Scam Helpline 18222", zh: "防骗易热线 18222" }, text: { en: "Connected", zh: "已接通" } },
     lines: [
-      { who: "Helpline", text: "This is a fake-official scam. Next they'd fake a video of you 'kidnapped' to get ransom from your parents." },
-      { who: "Helpline", text: "We've contacted your bank — the HK$3,000 transfer is frozen." },
-      { who: "Piggy", text: "Never underestimate a nosy roommate." }
+      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "This is a fake-official scam. Next they'd fake a video of you 'kidnapped' to get ransom from your parents.", zh: "这是冒充官员诈骗。下一步，他们会伪造你“被绑架”的视频，向你父母索要赎金。" } },
+      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "We've contacted your bank — the HK$3,000 transfer is frozen.", zh: "我们已联系银行——港币 3,000 元的转账已被冻结。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Never underestimate a nosy roommate.", zh: "永远别小看爱管闲事的室友。" } }
     ],
-    flag: "Broke the secrecy & got help",
+    flag: { en: "Broke the secrecy & got help", zh: "打破保密要求，主动求助" },
     next: "c3"
   },
 
   // ---------------- Chapter 3 · Deepfake ----------------
   c3: {
-    chapter: "Ch.3 Mom's Video Call", title: "Mom? At 2 AM?", kind: "video", media: null, pos: [9, 1],
-    scene: { emoji: "🌙📹👩‍🦳", bg: "linear-gradient(135deg,#1f2340,#454a7a)", tag: "Week 5 · 2:03 AM", glitch: true },
-    phone: { kind: "call", from: "Mom ❤️ (new account)", text: "Video call" },
+    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "Mom? At 2 AM?", zh: "妈妈？凌晨两点？" }, kind: "video", media: null, pos: [9, 1],
+    scene: { emoji: "🌙📹👩‍🦳", bg: "linear-gradient(135deg,#1f2340,#454a7a)", tag: { en: "Week 5 · 2:03 AM", zh: "第 5 周 · 凌晨 2:03" }, glitch: true },
+    phone: { kind: "call", from: { en: "Mom ❤️ (new account)", zh: "妈妈 ❤️（新账号）" }, text: { en: "Video call", zh: "视频通话" } },
     lines: [
-      { who: "Mom?", text: "Sweetie, my phone broke, I'm on Auntie's account. Grandpa's in hospital — they need a HK$4,000 deposit NOW." },
-      { who: "Mom?", text: "Don't call Dad, he's with the doctors. Hurry!" },
-      { who: "Piggy", text: "Wait. Why does Mom blink like a screensaver?" }
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Sweetie, my phone broke, I'm on Auntie's account. Grandpa's in hospital — they need a HK$4,000 deposit NOW.", zh: "宝贝，我手机坏了，用的是阿姨的账号。外公住院了——现在就要港币 4,000 元押金。" } },
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Don't call Dad, he's with the doctors. Hurry!", zh: "别打给爸爸，他正跟医生在一起。快点！" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Wait. Why does Mom blink like a screensaver?", zh: "等等，妈妈眨眼怎么像屏幕保护程序？" } }
     ],
-    redFlags: ["A brand-new account", "Money, urgently, at 2 AM", "Stops you checking with other family", "Glitches: lip-sync, blinking, blurry face edges", "Pay to a third-party account"],
+    redFlags: [{ en: "A brand-new account", zh: "全新的账号" }, { en: "Money, urgently, at 2 AM", zh: "凌晨两点急着要钱" }, { en: "Stops you checking with other family", zh: "阻止你找其他家人核实" }, { en: "Glitches: lip-sync, blinking, blurry face edges", zh: "画面破绽：口型、眨眼和模糊的脸部边缘" }, { en: "Pay to a third-party account", zh: "要求转账到第三方账户" }],
     choices: [
-      { label: "Send HK$4,000 now — it's Mom!", to: "c3_sent", safe: false },
-      { label: "Verify first", to: "c3_verify", safe: true }
+      { label: { en: "Send HK$4,000 now — it's Mom!", zh: "马上转港币 4,000 元——她是妈妈！" }, to: "c3_sent", safe: false },
+      { label: { en: "Verify first", zh: "先核实身份" }, to: "c3_verify", safe: true }
     ],
     timeoutTo: "c3_sent"
   },
   c3_verify: {
-    chapter: "Ch.3 Mom's Video Call", title: "The Dog Question", kind: "video", media: null, pos: [10, 0],
-    scene: { emoji: "🐶❓👩‍🦳", bg: "linear-gradient(135deg,#ffe6f0,#fff5e6)", tag: "Week 5 · 2:05 AM" },
+    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "The Dog Question", zh: "关于小狗的问题" }, kind: "video", media: null, pos: [10, 0],
+    scene: { emoji: "🐶❓👩‍🦳", bg: "linear-gradient(135deg,#ffe6f0,#fff5e6)", tag: { en: "Week 5 · 2:05 AM", zh: "第 5 周 · 凌晨 2:05" } },
     lines: [
-      { who: "Mia", text: "Mom, what was the name of our first dog?" },
-      { who: "Mom?", text: "Sweetie… no time for g-g-games!  *call dropped*" },
-      { who: "Real Mom", text: "Mia? It's 2 AM... Grandpa's fine, he's snoring right next to me." },
-      { who: "Piggy", text: "AI can copy a face. It can't copy your memories." }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Mom, what was the name of our first dog?", zh: "妈，我们家第一只狗叫什么名字？" } },
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Sweetie… no time for g-g-games!  *call dropped*", zh: "宝贝……没时间玩、玩游戏！*通话断开*" } },
+      { who: { en: "Real Mom", zh: "真正的妈妈" }, text: { en: "Mia? It's 2 AM... Grandpa's fine, he's snoring right next to me.", zh: "Mia？现在凌晨两点……外公没事，就在我旁边打呼噜呢。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "AI can copy a face. It can't copy your memories.", zh: "AI 能复制一张脸，却复制不了你们的回忆。" } }
     ],
-    flag: "Beat a deepfake with a secret question",
+    flag: { en: "Beat a deepfake with a secret question", zh: "用共同记忆的问题识破深伪" },
     branch: { ifLost: "end_comeback", else: "end_slayer" }
   },
   c3_sent: {
-    chapter: "Ch.3 Mom's Video Call", title: "Ten Minutes Later", kind: "video", media: null, pos: [10, 2],
-    scene: { emoji: "💸📩😱", bg: "linear-gradient(135deg,#ffb3b3,#ffe0e0)", tag: "Week 5 · 2:15 AM" },
+    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "Ten Minutes Later", zh: "十分钟后" }, kind: "video", media: null, pos: [10, 2],
+    scene: { emoji: "💸📩😱", bg: "linear-gradient(135deg,#ffb3b3,#ffe0e0)", tag: { en: "Week 5 · 2:15 AM", zh: "第 5 周 · 凌晨 2:15" } },
     enter: { money: -4000, lost: true },
-    phone: { kind: "sms", from: "Mom (real number)", text: "Why is Auntie asking if you're okay? I never called you." },
+    phone: { kind: "sms", from: { en: "Mom (real number)", zh: "妈妈（原号码）" }, text: { en: "Why is Auntie asking if you're okay? I never called you.", zh: "阿姨怎么问起你有没有事？我没打过电话给你啊。" } },
     lines: [
-      { who: "Mia", text: "No. No no no." },
-      { who: "Piggy", text: "Every minute counts now. Banks can freeze money — but only if you tell them FAST." }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "No. No no no.", zh: "不。不不不。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Every minute counts now. Banks can freeze money — but only if you tell them FAST.", zh: "现在每一分钟都重要。银行可以冻结款项——但你得马上告诉他们。" } }
     ],
-    redFlags: ["Feeling ashamed is normal — staying silent is what scammers count on"],
+    redFlags: [{ en: "Feeling ashamed is normal — staying silent is what scammers count on", zh: "感到羞耻很正常——骗子就指望你保持沉默" }],
     choices: [
-      { label: "Call the bank + 18222 RIGHT NOW", to: "end_comeback", safe: true, effect: { money: +2000, recovered: true } },
-      { label: "Too embarrassed. Tell no one.", to: "end_faceswap", safe: false }
+      { label: { en: "Call the bank + 18222 RIGHT NOW", zh: "马上联系银行并拨打 18222" }, to: "end_comeback", safe: true, effect: { money: +2000, recovered: true } },
+      { label: { en: "Too embarrassed. Tell no one.", zh: "太丢脸了。谁也不告诉。" }, to: "end_faceswap", safe: false }
     ],
     timeoutTo: "end_faceswap"
   },
 
   // ---------------- Endings ----------------
   end_slayer: {
-    chapter: "Ending", title: "Scam Slayer", kind: "image", media: null, pos: [11, 0],
-    scene: { emoji: "🐷🕶️🏆", bg: "linear-gradient(135deg,#fff1a8,#ffd6e7)", tag: "End of semester" },
-    lines: [{ who: "Piggy", text: "Still chubby. Still rich. Best semester ever." }],
-    ending: { badge: "🛡️", good: true, title: "SCAM SLAYER", text: "You spotted every trick. Now send this to the friend who clicks every link." }
+    chapter: { en: "Ending", zh: "结局" }, title: { en: "Scam Slayer", zh: "骗局终结者" }, kind: "image", media: null, pos: [11, 0],
+    scene: { emoji: "🐷🕶️🏆", bg: "linear-gradient(135deg,#fff1a8,#ffd6e7)", tag: { en: "End of semester", zh: "学期结束" } },
+    lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "Still chubby. Still rich. Best semester ever.", zh: "还是圆滚滚的，还是有钱。最棒的一个学期。" } }],
+    ending: { badge: "🛡️", good: true, title: { en: "SCAM SLAYER", zh: "骗局终结者" }, text: { en: "You spotted every trick. Now send this to the friend who clicks every link.", zh: "你识破了每个圈套。现在把这个故事发给那个见链接就点的朋友。" } }
   },
   end_comeback: {
-    chapter: "Ending", title: "Comeback Kid", kind: "image", media: null, pos: [11, 1],
-    scene: { emoji: "🐷🩹👍", bg: "linear-gradient(135deg,#d6f5ff,#ffe6f0)", tag: "End of semester" },
-    lines: [{ who: "Piggy", text: "A little lighter. A lot wiser." }],
-    ending: { badge: "🔁", good: true, title: "COMEBACK KID", text: "You got hooked — but you stopped, spoke up and reported. That's how money gets saved: fast action, no shame." }
+    chapter: { en: "Ending", zh: "结局" }, title: { en: "Comeback Kid", zh: "及时止损者" }, kind: "image", media: null, pos: [11, 1],
+    scene: { emoji: "🐷🩹👍", bg: "linear-gradient(135deg,#d6f5ff,#ffe6f0)", tag: { en: "End of semester", zh: "学期结束" } },
+    lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "A little lighter. A lot wiser.", zh: "轻了一点。也聪明了很多。" } }],
+    ending: { badge: "🔁", good: true, title: { en: "COMEBACK KID", zh: "及时止损者" }, text: { en: "You got hooked — but you stopped, spoke up and reported. That's how money gets saved: fast action, no shame.", zh: "你上过钩，但你停了手、说了出来，也报了案。保住钱靠的就是及时行动，不必羞于求助。" } }
   },
   end_dark: {
-    chapter: "Ending", title: "Gone Dark", kind: "image", media: null, pos: [8, 3],
-    scene: { emoji: "📱⬛😢", bg: "linear-gradient(135deg,#1a1a1a,#3a3a3a)", tag: "Two days later" },
-    lines: [{ who: "Narrator", text: "Mia went silent. Two days later, her parents received a video of her 'kidnapped' — and a ransom demand." }],
-    ending: { badge: "🌑", good: false, title: "GONE DARK", text: "Silence is a scammer's best friend. In real 'virtual kidnapping' cases, students were told to fake their own kidnapping. Tell someone. Always.", rewind: "c2_door" }
+    chapter: { en: "Ending", zh: "结局" }, title: { en: "Gone Dark", zh: "失联" }, kind: "image", media: null, pos: [8, 3],
+    scene: { emoji: "📱⬛😢", bg: "linear-gradient(135deg,#1a1a1a,#3a3a3a)", tag: { en: "Two days later", zh: "两天后" } },
+    lines: [{ who: { en: "Narrator", zh: "旁白" }, text: { en: "Mia went silent. Two days later, her parents received a video of her 'kidnapped' — and a ransom demand.", zh: "Mia 失联了。两天后，她的父母收到她“被绑架”的视频，以及索要赎金的信息。" } }],
+    ending: { badge: "🌑", good: false, title: { en: "GONE DARK", zh: "失联" }, text: { en: "Silence is a scammer's best friend. In real 'virtual kidnapping' cases, students were told to fake their own kidnapping. Tell someone. Always.", zh: "沉默是骗子最好的朋友。在真实的“虚拟绑架”案件中，学生曾被要求假装自己遭到绑架。一定要告诉别人。" }, rewind: "c2_door" }
   },
   end_faceswap: {
-    chapter: "Ending", title: "Face Swapped", kind: "image", media: null, pos: [11, 3],
-    scene: { emoji: "🎭🐷🕳️", bg: "linear-gradient(135deg,#3a2a4a,#6a4a6a)", tag: "One week later" },
-    lines: [{ who: "Piggy", text: "...echo... echo... I'm empty." }],
-    ending: { badge: "🎭", good: false, title: "FACE SWAPPED", text: "A deepfake needs only seconds of a voice and a few selfies. Shame kept Mia quiet — and the money disappeared.", rewind: "c3_sent" }
+    chapter: { en: "Ending", zh: "结局" }, title: { en: "Face Swapped", zh: "换脸陷阱" }, kind: "image", media: null, pos: [11, 3],
+    scene: { emoji: "🎭🐷🕳️", bg: "linear-gradient(135deg,#3a2a4a,#6a4a6a)", tag: { en: "One week later", zh: "一周后" } },
+    lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "...echo... echo... I'm empty.", zh: "……回声……回声……我空了。" } }],
+    ending: { badge: "🎭", good: false, title: { en: "FACE SWAPPED", zh: "换脸陷阱" }, text: { en: "A deepfake needs only seconds of a voice and a few selfies. Shame kept Mia quiet — and the money disappeared.", zh: "深伪只需要几秒语音和几张自拍。羞耻感让 Mia 保持沉默，钱也随之消失。" }, rewind: "c3_sent" }
   }
 };
 
 const HELP_LINES = [
-  { label: "Anti-Scam Helpline", value: "18222" },
-  { label: "Scameter (check numbers, sites, accounts)", value: "cyberdefender.hk" },
-  { label: "Emergency", value: "999" }
+  { label: { en: "Anti-Scam Helpline", zh: "防骗易热线" }, value: "18222" },
+  { label: { en: "Scameter (check numbers, sites, accounts)", zh: "防骗视伏器（查询号码、网站及账户）" }, value: "cyberdefender.hk" },
+  { label: { en: "Emergency", zh: "紧急求助" }, value: "999" }
+];
+
+// Quiz content lives beside the story; it does not change story choices.
+const QUIZ = [
+  {
+    question: { en: 'A task group pays you HK$50, then asks for a deposit. What should you do?', zh: '任务群先付给你港币 50 元，随后要求交押金。你会怎么做？' },
+    answers: [{ en: 'Pay to unlock the larger commission', zh: '付款，解锁更高佣金' }, { en: 'Stop and check before paying', zh: '停下来，付款前先核查' }], correct: 1,
+    explanation: { en: 'The small payout is bait. In Mia’s story, paying led to more invented fees.', zh: '小额付款是诱饵。在 Mia 的故事中，付款后又出现了更多编造的费用。' }
+  },
+  {
+    question: { en: 'An “officer” demands secrecy and a transfer to a “safety account”. What next?', zh: '“警官”要求保密，并让你转账到“安全账户”。下一步呢？' },
+    answers: [{ en: 'Hang up, tell someone and call 18222', zh: '挂断电话，告诉他人并拨打 18222' }, { en: 'Cooperate quietly to clear your name', zh: '悄悄配合，证明自己清白' }], correct: 0,
+    explanation: { en: 'Secrecy isolates Mia. Telling Jo gives her a way to stop and seek help.', zh: '保密要求让 Mia 陷入孤立。告诉 Jo，让她有机会停下来并求助。' }
+  },
+  {
+    question: { en: '“Mom” calls from a new account asking for urgent money. How do you verify?', zh: '“妈妈”用新账号来电，急着要钱。你如何核实？' },
+    answers: [{ en: 'Trust the familiar face on the screen', zh: '相信屏幕上熟悉的脸' }, { en: 'Call Mom’s known number before transferring', zh: '转账前先拨打妈妈原来的号码' }], correct: 1,
+    explanation: { en: 'Mia checks through Mom’s known number. A familiar face alone is not enough to verify a call.', zh: 'Mia 通过妈妈原来的号码核实。仅凭熟悉的脸，不能确认来电身份。' }
+  }
 ];
