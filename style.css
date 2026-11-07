@@ -70,7 +70,7 @@ main{max-width:1000px;margin:.4rem auto 1rem;padding:0 16px}
 .phone.chat .bubble{background:#DCF8C6}
 .phone.call{text-align:center}
 .phone.call .bubble{background:none;font-size:1.6rem}
-.phone.call .bubble::after{content:" · ringing";font-size:.8rem;color:#6B6283}
+.phone.call .bubble::after{content:attr(data-status);font-size:.8rem;color:#6B6283}
 .phone.doc .bubble{background:#FFF1DC;border:2px dashed #C47B2A;border-radius:6px;font-family:var(--font-mono);font-weight:700}
 .phone.scan .bubble{background:#FFE5E7;color:#B4141F;font-weight:800}
 
