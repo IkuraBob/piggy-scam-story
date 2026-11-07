@@ -12,3 +12,64 @@ An interactive anti-scam story for GTSC2066 (Idea 2 · Fraud Prevention). Watch 
 Run locally: `python3 -m http.server 8765` then open http://localhost:8765
 
 *Fictional, educational, non-commercial student project. Real help in Hong Kong: Anti-Scam Helpline 18222 · Scameter (cyberdefender.hk) · 999.*
+
+## Media and sound
+
+GitHub Pages serves `main` from the repository root. Add `media/<nodeId>.mp4`
+for video nodes or `media/<nodeId>.jpg` for image nodes; the existing `media: null`
+entries discover those names automatically. A custom local filename can still be
+set in `story.js`. Missing files use placeholders. Next-node assets preload while
+the current node plays.
+
+Optional audio lives in `media/audio/`:
+
+- `bgm-home.mp3`, `bgm-ch1.mp3`, `bgm-ch2.mp3`, `bgm-ch3.mp3`: looping music,
+  crossfaded over 600 ms.
+- `<nodeId>.mp3`: narration. Its playback clock drives subtitles, and music drops
+  to 30% of its usual gain while it plays.
+- Gain, loss, red-flag and final-five-second fuse sounds are synthesized locally
+  with Web Audio. Sound starts after a user click. The HUD toggle remembers mute.
+
+Subtitle lines accept `t` in seconds. Without `t`, lines use equal time slots.
+For exact narration alignment, add ascending `t` values to every line. With no
+narration, timing follows the video or placeholder. Missing optional media/audio
+can produce expected 404 entries in developer tools; playback falls back without
+an uncaught application error. If a browser blocks video autoplay, use Play video.
+
+## Language, quiz and sharing
+
+Story text and the three quiz questions live in `story.js` as `{ en, zh }` values.
+Language switching preserves the current balance and choices. Each ending shows
+an A/B route code; rewinding also rewinds that code. Players can copy the code or
+story link and download a PNG ending card. The quiz is separate from story choices.
+
+There is no analytics service or outgoing data submission. Endings, language and
+mute preferences are stored locally with failure-safe access. Fonts are served
+locally; their SIL Open Font License notices are in `assets/fonts/`. The entry
+pages use a CSP with no inline scripts, no inline style attributes and no network
+connections. Dynamic text is built with text nodes and `textContent`.
+
+## Checks
+
+Run the dependency-free logic checks with `node tests/check.cjs` if Node.js is
+available. The website itself needs only `python3 -m http.server 8765`.
+
+Local browser checks (2026-11-07):
+
+| Route | Choices | Ending | Balance |
+|---|---|---|---|
+| All safe | B-A-B | Scam Slayer | HK$8,000 |
+| Tax, roommate rescue, verify Mom | A-A-A-B-A-A-B | Comeback Kid | HK$5,050 |
+| Leave without telling Jo | B-B-A-B | Gone Dark | HK$5,000 |
+| Send to fake Mom and stay silent | B-A-A-B | Face Swapped | HK$4,000 |
+
+All four routes were played at 1280px and 375px. Also checked: rewind and revised
+route codes, timer timeout/pause, pressure toggle, Chinese quiz score, PNG export,
+missing-media fallback and language switching. Logic checks cover all 40 complete
+paths and the audio lifecycle. Local synthetic audio fixtures exercised browser
+playback, music switching and narration; these fixtures are not shipped.
+
+Still to verify: final video/MP3 assets, audible mix with real narration, iOS Safari
+and Android Chrome on physical devices, and the published site after approval to
+push. Existing story wording says Piggy is empty in Face Swapped, although some
+routes retain money; the original text and balance rules have been preserved.

@@ -45,6 +45,8 @@ cd site && python3 -m http.server 8765
 
 ## 4. 交给 Codex 的任务清单（按优先级排）
 
+**2026-11-07 本地执行状态：** 当前仓库从根目录运行，本文早期原型中的 `site/` 对应仓库根目录。真实视频、配音和背景音乐待提供；已完成默认文件名自动接入、预加载、首次点击解锁声音、可选字幕时间点及 375px 布局测试。已加入本地合成音效、分章节背景音乐淡入淡出、配音驱动字幕与背景音乐压低、静音记忆。P1 已实现中英切换、路线代码、结局图片与链接分享、三题测验。在线统计已按用户决定移除。iOS Safari 和 Android Chrome 实机测试尚未完成；尚未推送或验证线上部署。详细本地验证记录见根目录 README。
+
 > 可以直接复制给 Codex：
 >
 > "This repo contains a working interactive-story prototype (vanilla HTML/CSS/JS, story data in `story.js`). Keep the architecture and data format. **Follow `planning/design-guide.md`, `tokens.css` and `styleboard.html` strictly for every visual decision — do not introduce new colours, fonts or styles.** Also do a security pass: no secrets in the repo, no third-party trackers, escape any user-visible dynamic text, CSP-friendly code. Please:"
@@ -57,7 +59,7 @@ cd site && python3 -m http.server 8765
 5. 在手机（iOS Safari、Android Chrome）上测试，竖屏时舞台要自适应
 
 **P1（加分项）**
-6. **选择统计**：每次做选择时匿名记录一次（节点 id + 选了哪个），结局页显示 "62% of players added Kelly"。可以用 Supabase、Firebase 或 Cloudflare Workers KV 的免费额度；**不收集任何个人信息**
+6. **路线代码（替代在线选择统计）**：结局页显示每次选择对应的 A/B 序列，并提供复制按钮，测试者自行提交到组员管理的表单。网站不接入外部统计服务、不发送选择数据。
 7. **中英切换**：`story.js` 的文本改成 `{ en, zh }` 结构，右上角加一个语言切换按钮
 8. **分享结局**：生成一张结局卡片图（canvas），加上"复制链接"按钮
 9. 结局页加上"防诈小测验"（3 题），和课程的教育目标呼应
@@ -72,7 +74,7 @@ cd site && python3 -m http.server 8765
 
 | 方案 | 网址形式 | 说明 |
 |---|---|---|
-| ⭐ **GitHub Pages** | `https://<你的GitHub用户名>.github.io/piggy-scam-story/` | 最符合"后缀带主页名"的需求。仓库设为 Public，在 Settings → Pages 里选 `main` 分支和 `/site` 目录 |
+| ⭐ **GitHub Pages** | `https://<你的GitHub用户名>.github.io/piggy-scam-story/` | 最符合"后缀带主页名"的需求。仓库设为 Public，在 Settings → Pages 里选 `main` 分支和 `/ (root)` 目录 |
 | Vercel / Netlify | `https://piggy-scam-story.vercel.app` | 关联 GitHub 仓库后，每次 push 都会自动部署 |
 | Cloudflare Pages | `https://piggy.pages.dev` | 带宽不限，视频多的话最稳 |
 
