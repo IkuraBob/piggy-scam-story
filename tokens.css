@@ -1,0 +1,36 @@
+/* Piggy's Last Semester — design tokens. Single source of truth for colour, type, shape, motion. */
+:root{
+  /* colour */
+  --paper:#FFF8EF; --card:#FFFFFF; --ink:#2B2340; --ink-soft:#6B6283;
+  --pig:#FF9EC4; --pig-deep:#F27AAA;
+  --safe:#3CCB8B; --safe-ink:#16895A; --alert:#FF4D5E; --amber:#FFB547;
+  --lavender:#B9A6F5; --sky:#8FD3FF; --gold:#FFD447; --night:#1E1B3A;
+
+  /* chapter moods (stage backgrounds, mirror the video lighting) */
+  --mood-home:linear-gradient(135deg,#FFE7EF 0%,#FFF1D6 100%);
+  --mood-ch1:linear-gradient(135deg,#25214A 0%,#5B4A9B 100%);
+  --mood-ch2:linear-gradient(135deg,#4E6489 0%,#A9B9D3 100%);
+  --mood-ch3:linear-gradient(135deg,#0F0E1F 0%,#2C3150 100%);
+  --mood-alert:linear-gradient(135deg,#FF9AA4 0%,#FFD6C2 100%);
+  --mood-safe:linear-gradient(135deg,#C9F5DD 0%,#F0FFF6 100%);
+
+  /* type */
+  --font-display:"Fredoka","Arial Rounded MT Bold","PingFang SC","Noto Sans SC",sans-serif;
+  --font-body:"Nunito",ui-rounded,system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+
+  /* shape */
+  --outline:2.5px solid var(--ink);
+  --r-sm:8px; --r-md:14px; --r-lg:20px;
+  --shadow-sticker:4px 4px 0 var(--ink);
+
+  /* motion */
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --t-fast:160ms; --t-med:320ms; --t-slow:600ms;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --paper:#17142B; --card:#25203F; --ink:#F4EEFF; --ink-soft:#B3A9CF; --shadow-sticker:4px 4px 0 #000; }
+}
+:root[data-theme="dark"]{ --paper:#17142B; --card:#25203F; --ink:#F4EEFF; --ink-soft:#B3A9CF; --shadow-sticker:4px 4px 0 #000; }
+@media (prefers-reduced-motion: reduce){ :root{ --t-fast:0ms; --t-med:0ms; --t-slow:0ms; } }

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piggy Style Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body)}
+  .wrap{max-width:1040px;margin:0 auto;padding:32px 16px 64px}
+  h1{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.2rem);margin:.1em 0}
+  h2{font-family:var(--font-display);font-size:1.5rem;margin:2.2rem 0 .8rem;display:flex;gap:.5rem;align-items:center}
+  h2 small{font-family:var(--font-body);font-size:.85rem;color:var(--ink-soft);font-weight:400}
+  .lead{color:var(--ink-soft);max-width:60ch}
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .sticker{background:var(--card);border:var(--outline);border-radius:var(--r-lg);box-shadow:var(--shadow-sticker);padding:14px}
+  .pig img{width:100%;height:110px;object-fit:contain}
+  .pig b{display:block;font-family:var(--font-display)}
+  .pig span{font-size:.82rem;color:var(--ink-soft)}
+  .sw{height:72px;border-radius:12px;border:var(--outline);margin-bottom:8px}
+  .sw-name{font-weight:800}.sw-hex{font-family:var(--font-mono);font-size:.8rem;color:var(--ink-soft)}
+  .moods{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .mood{border-radius:var(--r-lg);border:var(--outline);padding:18px;min-height:150px;box-shadow:var(--shadow-sticker);color:#fff}
+  .mood h3{font-family:var(--font-display);margin:0 0 .3em}
+  .mood p{margin:0;font-size:.9rem;opacity:.92}
+  .type-row{display:flex;gap:16px;flex-wrap:wrap;align-items:baseline}
+  .t-display{font-family:var(--font-display);font-weight:700;font-size:2.4rem}
+  .t-body{font-size:1.05rem}
+  .t-mono{font-family:var(--font-mono);font-weight:700;background:#FFF1DC;border:2px dashed #C47B2A;padding:.3em .6em;border-radius:8px}
+  .demo-stage{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+  @media (max-width:760px){.demo-stage{grid-template-columns:1fr}}
+  .btn-choice{display:flex;gap:.7em;align-items:center;width:100%;text-align:left;font:800 1rem var(--font-body);background:var(--card);color:var(--ink);border:var(--outline);border-radius:var(--r-md);padding:.8em 1em;box-shadow:var(--shadow-sticker);cursor:pointer;transition:transform var(--t-fast) var(--ease-spring),box-shadow var(--t-fast)}
+  .btn-choice:hover{transform:translate(-2px,-2px) rotate(-.5deg);box-shadow:6px 6px 0 var(--ink)}
+  .btn-choice .key{display:grid;place-items:center;width:1.9em;height:1.9em;border-radius:8px;background:var(--pig);border:2.5px solid var(--ink);color:var(--ink);font-family:var(--font-display)}
+  .btn-primary{font:700 1.05rem var(--font-display);background:var(--pig);color:var(--ink);border:var(--outline);border-radius:999px;padding:.7em 1.6em;box-shadow:var(--shadow-sticker);cursor:pointer}
+  .fuse{position:relative;height:18px;border:var(--outline);border-radius:999px;background:var(--card);overflow:visible;margin:10px 0 18px}
+  .fuse i{position:absolute;inset:2px auto 2px 2px;width:62%;border-radius:999px;background:repeating-linear-gradient(-45deg,var(--alert) 0 8px,#FF7A87 8px 16px)}
+  .fuse b{position:absolute;left:62%;top:50%;transform:translate(-50%,-50%);font-size:1.3rem}
+  .bubble{background:#DCF8C6;border:var(--outline);border-radius:16px 16px 16px 4px;padding:.6em .8em;max-width:280px}
+  .phone-chip{font:800 .75rem var(--font-body);color:var(--ink-soft);margin-bottom:6px}
+  .flag-stamp{display:inline-flex;gap:.4em;align-items:center;background:var(--safe);color:var(--ink);border:var(--outline);border-radius:999px;padding:.3em .9em;font-weight:800;transform:rotate(-2deg);box-shadow:var(--shadow-sticker)}
+  .hud-demo{display:flex;gap:10px;flex-wrap:wrap}
+  .hud-chip{display:flex;gap:.4em;align-items:center;background:var(--card);border:var(--outline);border-radius:999px;padding:.25em .8em .25em .3em;font-weight:800}
+  .hud-chip img{width:30px;height:30px}
+  .tape{position:relative}
+  .tape::before{content:"";position:absolute;top:-10px;left:50%;width:80px;height:20px;transform:translateX(-50%) rotate(-3deg);background:rgba(185,166,245,.7);border:1.5px solid rgba(43,35,64,.25)}
+  .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:640px){.do-dont{grid-template-columns:1fr}}
+  .do-dont ul{margin:.3em 0 0;padding-left:1.2em}
+  .do h3{color:var(--safe-ink)}.dont h3{color:var(--alert)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img src="assets/piggy-happy.svg" alt="" width="90">
+  <h1>Piggy's Last Semester — Style Board</h1>
+  <p class="lead"><b>Concept: "Mia's Sticker Diary".</b> The site feels like a cosy scrapbook (thick ink outlines, chunky stickers, washi tape, rounded type). Scams invade it: whenever danger rises, the warm diary is swallowed by cold night-indigo and alert red. The <i>colour itself</i> tells you whether you're safe.</p>
+
+  <h2>Piggy expression set <small>assets/piggy-*.svg · drives HUD, start &amp; ending screens</small></h2>
+  <div class="grid">
+    <div class="sticker pig"><img src="assets/piggy-happy.svg" alt=""><b>happy</b><span>money ≥ 80%, start screen</span></div>
+    <div class="sticker pig"><img src="assets/piggy-worried.svg" alt=""><b>worried</b><span>a choice is on screen / 50–80%</span></div>
+    <div class="sticker pig"><img src="assets/piggy-fainted.svg" alt=""><b>fainted</b><span>right after losing money</span></div>
+    <div class="sticker pig"><img src="assets/piggy-broke.svg" alt=""><b>broke</b><span>&lt; 50%, bad endings</span></div>
+    <div class="sticker pig"><img src="assets/piggy-cool.svg" alt=""><b>cool</b><span>red flag spotted, Scam Slayer</span></div>
+  </div>
+
+  <h2>Palette <small>tokens.css</small></h2>
+  <div class="grid">
+    <div><div class="sw" style="background:#FFF8EF"></div><div class="sw-name">Paper</div><div class="sw-hex">#FFF8EF · page bg</div></div>
+    <div><div class="sw" style="background:#FF9EC4"></div><div class="sw-name">Piggy Pink</div><div class="sw-hex">#FF9EC4 · brand, primary</div></div>
+    <div><div class="sw" style="background:#2B2340"></div><div class="sw-name">Ink</div><div class="sw-hex">#2B2340 · text, outlines</div></div>
+    <div><div class="sw" style="background:#3CCB8B"></div><div class="sw-name">Safe Mint</div><div class="sw-hex">#3CCB8B · right choice</div></div>
+    <div><div class="sw" style="background:#FF4D5E"></div><div class="sw-name">Alert Red</div><div class="sw-hex">#FF4D5E · danger, timer</div></div>
+    <div><div class="sw" style="background:#FFB547"></div><div class="sw-name">Amber</div><div class="sw-hex">#FFB547 · warning</div></div>
+    <div><div class="sw" style="background:#B9A6F5"></div><div class="sw-name">Lavender</div><div class="sw-hex">#B9A6F5 · tape, accents</div></div>
+    <div><div class="sw" style="background:#1E1B3A"></div><div class="sw-name">Night</div><div class="sw-hex">#1E1B3A · scam scenes</div></div>
+  </div>
+
+  <h2>Mood per chapter <small>site background + video lighting share one colour script</small></h2>
+  <div class="moods">
+    <div class="mood" style="background:var(--mood-home);color:var(--ink)"><h3>Home · Safe</h3><p>Intro, safe nodes, good endings. Warm cream→pink. Prompt: <i>soft warm lighting</i>.</p></div>
+    <div class="mood" style="background:var(--mood-ch1)"><h3>Ch.1 · Late-night lure</h3><p>Phone glow in a dark room. Indigo→violet. Prompt: <i>dim room lit by phone glow</i>.</p></div>
+    <div class="mood" style="background:var(--mood-ch2)"><h3>Ch.2 · Cold authority</h3><p>Steel blue, desaturated, sterile. Prompt: <i>cool blue tone, flat light</i>.</p></div>
+    <div class="mood" style="background:var(--mood-ch3)"><h3>Ch.3 · Uncanny 2 AM</h3><p>Near-black with a sickly screen glow + glitch. Prompt: <i>cold screen glow, digital flicker</i>.</p></div>
+  </div>
+
+  <h2>Type</h2>
+  <div class="sticker">
+    <div class="type-row"><span class="t-display">Fredoka 700</span><span>headings, buttons, numbers</span></div>
+    <div class="type-row"><span class="t-body">Nunito 400 / 800 — subtitles, body, UI labels. Friendly and very legible on video.</span></div>
+    <div class="type-row" style="margin-top:.6em"><span class="t-mono">ARREST WARRANT · Case #HK-0921</span><span>JetBrains Mono — only for "official-looking" fake documents</span></div>
+  </div>
+
+  <h2>Components</h2>
+  <div class="demo-stage">
+    <div class="sticker tape">
+      <div class="fuse"><i></i><b>💥</b></div>
+      <div style="font:700 1.25rem var(--font-display);margin-bottom:.6em">What should Mia do?</div>
+      <div style="display:grid;gap:10px">
+        <button class="btn-choice"><span class="key">A</span>Add "Kelly from HR" on WhatsApp</button>
+        <button class="btn-choice"><span class="key">B</span>Delete it &amp; report the number</button>
+      </div>
+      <p style="font-size:.85rem;color:var(--ink-soft)">Timer = a burning fuse (red stripes shrink; spark rides the end). Buttons lift and tilt on hover like a peeling sticker.</p>
+    </div>
+    <div class="sticker" style="display:grid;gap:14px;align-content:start">
+      <div class="hud-demo">
+        <span class="hud-chip"><img src="assets/piggy-worried.svg" alt="">HK$7,050</span>
+        <span class="hud-chip"><img src="assets/icon-flag.svg" alt="">3</span>
+      </div>
+      <div><div class="phone-chip">Kelly from HR 💼</div><div class="bubble">You're a star 💕 Join our VIP Task Group: deposit HK$1,000…</div></div>
+      <div><span class="flag-stamp"><img src="assets/icon-flag.svg" width="20" alt="">Red flag spotted!</span></div>
+      <div><button class="btn-primary">▶ Start the story</button></div>
+    </div>
+  </div>
+
+  <h2>Do / Don't</h2>
+  <div class="do-dont">
+    <div class="sticker do"><h3>✅ Do</h3><ul>
+      <li>2.5–3px ink outlines + hard offset shadow (4px 4px 0 ink) on every card</li>
+      <li>Let colour carry the meaning: mint = safe, red = danger, never decorative</li>
+      <li>Piggy reacts to <i>everything</i> — he's the emotional meter</li>
+      <li>All on-screen text (SMS, chats, warrants) in HTML, never baked into video</li>
+      <li>Spring easing for UI, slow push-in for media</li>
+    </ul></div>
+    <div class="sticker dont"><h3>🚫 Don't</h3><ul>
+      <li>No real bank / police / app logos or real people (course ethics rule)</li>
+      <li>No glassmorphism, no purple-blue "AI startup" gradients on the UI chrome</li>
+      <li>No more than 2 choices per node — speed matters more than options</li>
+      <li>Don't make bad endings preachy — show consequence, then offer rewind</li>
+      <li>No auto-playing sound before the first click</li>
+    </ul></div>
+  </div>
+</div>
+</body>
+</html>
