@@ -141,3 +141,32 @@ main{max-width:1000px;margin:.4rem auto 1rem;padding:0 16px}
 .node.locked{opacity:.55}
 
 .foot{max-width:1000px;margin:1.2rem auto 2rem;padding:0 16px;font-size:.8rem;color:var(--ink-soft);text-align:center}
+
+/* Playback controls and responsive flow reuse the existing diary components. */
+button,.toggle{min-height:44px}
+.resume{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2}
+.overlay{overflow-y:auto;place-items:safe center}
+.screen{place-items:safe center}
+.subs{bottom:64px}
+@media (max-width:640px){
+  .stage{min-height:0;aspect-ratio:auto}
+  .screen,.clip,.overlay{position:relative;inset:auto}
+  .screen{min-height:520px}
+  .clip{display:flex;flex-direction:column;padding-bottom:12px}
+  .media{position:relative;aspect-ratio:16/9;overflow:hidden;order:1}
+  .media video,.media img{object-fit:contain}
+  .tag{position:relative;inset:auto;align-self:flex-start;margin:12px;order:0;max-width:calc(100% - 24px)}
+  .phone{position:relative;inset:auto;width:auto;margin:12px 16px;order:2}
+  .subs{position:relative;inset:auto;transform:none;width:auto;margin:12px;order:3}
+  .skip{position:relative;inset:auto;align-self:flex-end;margin:0 12px 12px;order:4}
+  .resume{position:relative;inset:auto;transform:none;margin:12px;order:2}
+  .placeholder .kind{font-size:.7rem;top:auto;bottom:8px}
+  .overlay{padding:44px 16px 20px}
+  .overlay.light{padding:20px 16px}
+  .stage:has(#choiceOverlay:not([hidden])) .clip{display:none}
+  .choice-pig{right:0}
+  .flag-earned{max-width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}

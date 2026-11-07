@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' blob:; media-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Piggy's Last Semester</title>
 <meta name="description" content="An interactive anti-scam story. Make the choices, keep Piggy alive.">
@@ -45,6 +47,7 @@
       <div class="phone" id="phone" hidden></div>
       <div class="subs" id="subs"></div>
       <div class="progress"><div id="progressBar"></div></div>
+      <button class="primary resume" id="btnResume" hidden>▶ Play video</button>
       <button class="skip ghost" id="btnSkip">Skip ⏭</button>
     </div>
 
