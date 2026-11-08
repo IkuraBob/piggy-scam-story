@@ -153,7 +153,7 @@ intro ─ c1 刷单 ─────┤                          │
 > 💡 **演讲亮点：** 这里可以故意让 AI 生成的"妈妈"有瑕疵，和一段"正常"的生成片段并排对比，用来说明深伪会露出哪些破绽（这部分可以放进 Insights）。
 
 **c3_verify（15s）** Mia："Mom, what was the name of our first dog?" 假妈妈卡顿、画面闪烁："Sweetie… no time for games!"，然后通话断了。Mia 打妈妈原来的号码，真妈妈迷迷糊糊地接起来：
-- 👩‍🦳 "Mia? It's 2am... Grandpa's fine, he's snoring right next to me."
+- 👩‍🦳 "Mia? It's 2 AM. Grandpa's fine — he's snoring next door."
 - 🐷 "AI can copy a face. It can't copy your memories."
 - → 一分没丢 = 🛡️ **Scam Slayer**；之前丢过钱 = 🔁 **Comeback Kid**
 

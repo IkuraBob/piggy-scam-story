@@ -220,7 +220,7 @@ const STORY = {
     lines: [
       { who: { en: "Mia", zh: "Mia" }, text: { en: "Mom, what was our first dog's name?", zh: "妈，我们家第一只狗叫什么？" } },
       { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "No time for g-g-games! *call dropped*", zh: "没时间玩、玩游戏！*通话断开*" } },
-      { who: { en: "Real Mom", zh: "真正的妈妈" }, text: { en: "Mia? It's 2 AM. Grandpa's fine — he's snoring next to me.", zh: "Mia？凌晨两点了。外公没事——他就在我旁边打呼噜。" } },
+      { who: { en: "Real Mom", zh: "真正的妈妈" }, text: { en: "Mia? It's 2 AM. Grandpa's fine — he's snoring next door.", zh: "Mia？凌晨两点了。外公没事——他在隔壁房间打呼噜呢。" } },
       { who: { en: "Piggy", zh: "Piggy" }, text: { en: "AI can copy a face. Not your memories.", zh: "AI 能复制脸，复制不了回忆。" } }
     ],
     flag: { en: "Beat a deepfake with a secret question", zh: "用共同记忆的问题识破深伪" },
