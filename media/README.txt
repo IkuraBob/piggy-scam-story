@@ -6,6 +6,6 @@ Audio naming and playback details: audio/README.txt.
 
 Subtitles in story.js support an optional t value in seconds:
 { who: { en: "Mia", zh: "Mia" }, text: { en: "Hello", zh: "你好" }, t: 1.5 }
-Without t, lines are evenly distributed over the narration/video duration.
-With no narration or video, the placeholder supplies the playback clock.
+Without t, video subtitles are evenly distributed over the video duration.
+Image nodes and missing-media placeholders use subtitle-only timing.
 For precise voice alignment, specify t on every line in ascending order.

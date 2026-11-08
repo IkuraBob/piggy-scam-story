@@ -9,6 +9,7 @@
   let timers = [];                 // pending timeouts/intervals for the current clip
   let countdown = null;
   let clipVersion = 0;
+  let narrationForClip = false;
   const player = document.createElement("video");
   player.playsInline = true;
   player.preload = "auto";
@@ -126,12 +127,14 @@
   function playClip(n) {
     const version = ++clipVersion;
     const nodeId = S.node;
-    let finished = false, narration = null, timelineReady = false, videoEnded = false;
-    PiggyAudio.stopVoice();
+    let finished = false, narration = null, timelineReady = false;
+    PiggyAudio.setVideoPlaying(false);
+    PiggyAudio.stopVoice(); narrationForClip = false;
+    player.onplaying = player.onpause = player.onwaiting = null;
     player.pause(); player.onended = player.onerror = player.onloadedmetadata = null;
     ["startScreen", "endScreen", "choiceOverlay", "continueOverlay", "btnResume"].forEach(x => show($(x), false));
     show($("clip")); show($("btnSkip"));
-    player.muted = PiggyAudio.muted;
+    player.muted = true; // Keep silent until the user gesture and narration probe resolve.
     $("sceneTag").textContent = `${tx(n.chapter)} · ${tx(n.scene?.tag) || ""}`;
     $("subs").replaceChildren();
     $("progressBar").style.width = "0";
@@ -139,22 +142,26 @@
     const media = $("media");
     media.replaceChildren();
     const active = () => version === clipVersion && !finished;
-    const done = () => { if (!active()) return; finished = true; player.pause(); PiggyAudio.stopVoice(); finishClip(n); };
+    const done = () => { if (!active()) return; finished = true; player.pause(); PiggyAudio.setVideoPlaying(false); PiggyAudio.stopVoice(); finishClip(n); };
     const duration = () => Math.max(Math.max(1, n.lines.length) * LINE_MS + 600,
       ...n.lines.map(line => Number.isFinite(line.t) ? line.t * 1000 + LINE_MS : 0));
     const timeline = async (total, video) => {
-      narration = await PiggyAudio.startVoice(nodeId, done);
-      if (!active()) return;
+      // Image nodes and missing-media placeholders use subtitles only.
+      if (!video) { runSubsTimed(n.lines, total, done); return; }
+      narration = await PiggyAudio.startVoice(nodeId, () => {});
+      if (!active() || !media.contains(video)) return;
+      narrationForClip = !!narration;
+      video.muted = !PiggyAudio.unlocked || PiggyAudio.muted || narrationForClip;
       timelineReady = true;
-      if (narration) {
-        if (video) video.muted = true;
-        runSubsTimed(n.lines, narration.duration * 1000, null, narration);
-      } else if (video && videoEnded) done();
-      else runSubsTimed(n.lines, total, video ? null : done, video);
+      // Video owns the node duration and subtitle clock, including a voice override.
+      runSubsTimed(n.lines, total, null, video);
     };
     const placeholder = () => {
       if (!active()) return;
-      clearTimers(); player.pause(); show($("btnResume"), false);
+      clearTimers(); player.onplaying = player.onpause = player.onwaiting = null;
+      player.onerror = player.onended = player.onloadedmetadata = null;
+      player.pause(); PiggyAudio.setVideoPlaying(false); PiggyAudio.stopVoice();
+      narrationForClip = false; show($("btnResume"), false);
       const card = el("div", `placeholder ${n.scene?.glitch ? "glitch" : ""}`);
       card.style.background = `var(--mood-${moodOf(S.node)})`;
       card.append(el("div", "emoji", n.scene?.emoji || "🎬"), el("div", "kind", `${n.kind === "video" ? "🎬" : "🖼️"} ${tx(n.title)}`));
@@ -165,16 +172,24 @@
     if (path && /\.(mp4|webm|mov)$/i.test(new URL(path).pathname)) {
       player.src = path;
       player.onerror = placeholder;
-      player.onloadedmetadata = () => {
-        if (active() && Number.isFinite(player.duration) && player.duration > 0) timeline(player.duration * 1000, player);
+      player.onloadedmetadata = async () => {
+        player.onloadedmetadata = null;
+        if (!active()) return;
+        if (!Number.isFinite(player.duration) || player.duration <= 0) return placeholder();
+        await timeline(player.duration * 1000, player);
+        if (active() && media.contains(player)) play();
       };
-      player.onended = () => { videoEnded = true; if (timelineReady && !narration) done(); };
+      player.onended = () => { if (timelineReady) done(); };
+      player.onplaying = () => {
+        if (active()) PiggyAudio.setVideoPlaying(!narrationForClip && videoHasAudio(player));
+      };
+      player.onpause = player.onwaiting = () => PiggyAudio.setVideoPlaying(false);
       media.append(player);
       const play = () => player.play().then(() => { if (active()) show($("btnResume"), false); }).catch(() => {
         if (active() && media.contains(player)) show($("btnResume"));
       });
       $("btnResume").onclick = () => { unlockAudio(); play(); };
-      play();
+      player.load();
     } else if (path) {
       const img = new Image();
       img.className = "kenburns"; img.alt = tx(n.title);
@@ -184,6 +199,13 @@
     } else placeholder();
     preloadNext(n);
     $("btnSkip").onclick = () => { clearTimers(); show($("btnResume"), false); done(); };
+  }
+
+  function videoHasAudio(video) {
+    if (video.audioTracks) return video.audioTracks.length > 0;
+    if (typeof video.mozHasAudio === "boolean") return video.mozHasAudio;
+    // Some browsers expose no reliable audio-track metadata. Duck conservatively.
+    return true;
   }
 
   // Optional t values are seconds. Untimed lines retain evenly spaced slots.
@@ -498,7 +520,7 @@
     const sound = $("btnSound");
     const updateSound = () => { sound.textContent = PiggyAudio.muted ? "🔇" : "🔊"; sound.setAttribute("aria-label", PiggyAudio.muted ? ui("Unmute audio", "开启声音") : ui("Mute audio", "关闭声音")); sound.setAttribute("aria-pressed", String(!PiggyAudio.muted)); };
     updateSound();
-    sound.onclick = () => { unlockAudio(); PiggyAudio.setMuted(!PiggyAudio.muted); player.muted = PiggyAudio.muted || PiggyAudio.voiceActive; updateSound(); };
+    sound.onclick = () => { unlockAudio(); PiggyAudio.setMuted(!PiggyAudio.muted); player.muted = !PiggyAudio.unlocked || PiggyAudio.muted || narrationForClip; updateSound(); };
     document.addEventListener("click", unlockAudio, { once: true, capture: true });
     $("pressure").onchange = () => {
       stopCountdown();

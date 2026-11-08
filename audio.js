@@ -1,6 +1,7 @@
 // Local audio only. Optional files may be absent; failures resolve to silence.
 const PiggyAudio = (() => {
   let context, master, unlocked = false, muted = false, currentMood = null;
+  let videoPlaying = false;
   let voiceActive = false, voiceVersion = 0, currentTrack = null;
   const tracks = new Map();
   const voice = new Audio();
@@ -37,9 +38,14 @@ const PiggyAudio = (() => {
     try { localStorage.setItem('piggy.muted', String(muted)); } catch {}
     if (!muted && currentTrack && !currentTrack.failed) currentTrack.audio.play().catch(() => {});
   }
+  function musicLevel() { return voiceActive ? .06 : videoPlaying ? .05 : .2; }
   function duck(on) {
     voiceActive = on;
-    if (currentTrack) ramp(currentTrack.gain, on ? .06 : .2, .32);
+    if (currentTrack) ramp(currentTrack.gain, musicLevel(), .32);
+  }
+  function setVideoPlaying(on) {
+    videoPlaying = !!on;
+    if (currentTrack) ramp(currentTrack.gain, musicLevel(), .32);
   }
   function mood(name) {
     if (!unlocked || name === currentMood) return;
@@ -62,7 +68,7 @@ const PiggyAudio = (() => {
     }
     currentTrack = track; clearTimeout(track.stop);
     if (!track.failed) {
-      track.audio.play().then(() => { if (currentTrack === track) ramp(track.gain, voiceActive ? .06 : .2); }).catch(() => {});
+      track.audio.play().then(() => { if (currentTrack === track) ramp(track.gain, musicLevel()); }).catch(() => {});
     }
   }
   function stopVoice() {
@@ -115,5 +121,5 @@ const PiggyAudio = (() => {
     }
     source.start(now); source.stop(now + duration);
   }
-  return { unlock, setMuted, mood, startVoice, stopVoice, sfx, get muted() { return muted; }, get voiceActive() { return voiceActive; } };
+  return { unlock, setMuted, setVideoPlaying, mood, startVoice, stopVoice, sfx, get unlocked() { return unlocked; }, get muted() { return muted; }, get voiceActive() { return voiceActive; } };
 })();

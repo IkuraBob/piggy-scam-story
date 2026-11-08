@@ -19,6 +19,11 @@ function walk(id,state,depth=0) {
   else walk(n.branch?(s.lost?n.branch.ifLost:n.branch.else):n.next,s,depth+1);
 }
 walk('intro',{money:8000,lost:false}); assert.equal(endings.size,4);
+assert.equal(paths,40);
+for (const [id, expected] of Object.entries({
+  end_comeback:[3050,5050,6000,6050,7050,8000,8050],
+  end_faceswap:[1050,3050,4000,4050], end_dark:[2050,4050,5000,5050], end_slayer:[8000,8050]
+})) assert.deepEqual([...endings.get(id)].sort((a,b)=>a-b),expected,`${id} balances`);
 // Spoken words: contractions, hyphenated compounds and numbers count as one;
 // stage directions in *asterisks* are not spoken dialogue.
 const videoWordCounts = {};
@@ -59,6 +64,39 @@ now=50000;tick();assert.equal(caption(),'Miafirst','Paused voice must not advanc
 clock.currentTime=3;tick();assert.equal(caption(),'Piggysecond');clock.currentTime=.5;tick();assert.equal(subs.children.length,0);
 now=0;run([{who:'A',text:'one'},{who:'B',text:'two'}],6000,()=>{});now=3100;tick();assert.equal(caption(),'Btwo');
 
+// Exercise the actual clip controller with deterministic video and audio events.
+async function checkVideoPlayback() {
+  const playSource=app.slice(app.indexOf('  function playClip('),app.indexOf('  // Optional t values'));
+  async function scenario(hasNarration) {
+    const elements=new Map();
+    class Element extends TextElement { constructor(){super();this.hidden=true;} contains(x){return this.children.includes(x);} }
+    const get=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
+    let started=0,finished=0,voiceStarts=0,voiceEnd,ducked=false,subArgs;
+    const video={muted:true,duration:5,currentTime:0,paused:true,preload:'auto',audioTracks:[{}],
+      pause(){this.paused=true;this.onpause?.();},load(){},
+      play(){started++;this.paused=false;this.onplaying?.();return Promise.resolve();}};
+    const narration={duration:3,currentTime:0};
+    const audio={unlocked:true,muted:false,stopVoice(){},setVideoPlaying(v){ducked=v;},
+      startVoice(_id,cb){voiceStarts++;voiceEnd=cb;return Promise.resolve(hasNarration?narration:null);}};
+    const env={$:get,S:{node:'intro'},clipVersion:0,narrationForClip:false,player:video,PiggyAudio:audio,
+      show:(x,on=true)=>{x.hidden=!on;},tx:x=>x,renderPhone(){},clearTimers(){},finishClip(){finished++;},
+      LINE_MS:2800,runSubsTimed:(...args)=>{subArgs=args;},localMedia:x=>'http://localhost/'+x,URL,
+      preloadNext(){},unlockAudio(){},el:()=>new Element(),moodOf:()=> 'home'};
+    const play=vm.runInNewContext(playSource+'; playClip',env);
+    const node={kind:'video',lines:[{text:'one'},{text:'two'}],title:'test',chapter:'test'};
+    play(node);assert.equal(started,0,'Probe before starting soundtrack');assert.equal(video.muted,true);
+    await video.onloadedmetadata();
+    assert.equal(started,1);assert.equal(video.muted,hasNarration);
+    assert.equal(ducked,!hasNarration);assert.equal(subArgs[1],5000);assert.equal(subArgs[3],video,'Captions follow video even with narration');
+    voiceEnd();assert.equal(finished,0,'Narration ending must not cut video short');
+    video.currentTime=5;video.onended();assert.equal(finished,1);assert.equal(ducked,false);
+    play(node);get('btnSkip').onclick();assert.equal(finished,2);assert.equal(video.paused,true);
+    play(node);video.onerror();assert.equal(ducked,false);assert.equal(voiceStarts,1,'Placeholder must not start narration');
+    assert.equal(subArgs[3],undefined);assert.equal(subArgs[1],6200,'Preserve placeholder pacing');
+  }
+  await scenario(false);await scenario(true);
+}
+
 // Exercise real audio module logic using deterministic media/Web Audio doubles.
 const audios=[], gains=[], tones=[], jobs=new Map(); let job=0;
 class Param { constructor(v=0){this.value=v;this.targets=[];} setValueAtTime(v){this.value=v;} cancelScheduledValues(){} linearRampToValueAtTime(v){this.value=v;this.targets.push(v);} exponentialRampToValueAtTime(v){this.value=v;this.targets.push(v);} }
@@ -81,16 +119,21 @@ class Context {
 const sandbox={Audio:Media,window:{AudioContext:Context},localStorage:{getItem(){return null;},setItem(){}},setTimeout:f=>{jobs.set(++job,f);return job;},clearTimeout:id=>jobs.delete(id),Math};
 const audio=vm.runInNewContext(read('audio.js')+'; PiggyAudio',sandbox);
 module.exports = (async()=>{
+ await checkVideoPlayback();
  audio.sfx('coin'); assert.equal(tones.length,0,'No sound before first click');
  audio.unlock();audio.sfx('coin');audio.sfx('loss');audio.sfx('stamp');audio.sfx('hiss');assert.equal(tones.length,3);
  audio.mood('home');const homeGain=gains.at(-1);await Promise.resolve();assert.equal(audios[1].src,'media/audio/bgm-home.mp3');assert.equal(homeGain.gain.value,.2);
  audio.mood('ch1');const ch1Gain=gains.at(-1);await Promise.resolve();assert.equal(homeGain.gain.value,0);assert.equal(ch1Gain.gain.value,.2);
+ audio.setVideoPlaying(true);assert.equal(ch1Gain.gain.value,.05,'Video ducks BGM to 25%');
+ audio.setVideoPlaying(false);assert.equal(ch1Gain.gain.value,.2);
+ audio.setVideoPlaying(true);
  let ended=false;const voice=await audio.startVoice('intro',()=>{ended=true;});assert.equal(voice.duration,3);assert.equal(ch1Gain.gain.value,.06,'Voice ducks music to 30%');
- voice.onended();assert.equal(ended,true);assert.equal(ch1Gain.gain.value,.2);
+ voice.onended();assert.equal(ended,true);assert.equal(ch1Gain.gain.value,.05,'Video remains ducked after narration');
+ audio.setVideoPlaying(false);assert.equal(ch1Gain.gain.value,.2);
  audio.setMuted(true);assert.equal(gains[0].gain.value,0);audio.sfx('coin');assert.equal(tones.length,3);audio.setMuted(false);
  audio.stopVoice();assert.ok(voice.paused);assert.equal(audio.voiceActive,false);
  audios[2].onerror();audio.mood('ch2');await Promise.resolve();assert.equal(audios[3].src,'media/audio/bgm-ch2.mp3');
- const result = {syntax:'pass',storyPaths:paths,endings:[...endings].map(([id,money])=>({id,balances:[...money].sort((a,b)=>a-b)})),bilingualText:'pass',videoWordCounts,subtitleClocks:'pass',security:'pass',audioLifecycle:'pass'};
+ const result = {syntax:'pass',storyPaths:paths,endings:[...endings].map(([id,money])=>({id,balances:[...money].sort((a,b)=>a-b)})),bilingualText:'pass',videoWordCounts,subtitleClocks:'pass',security:'pass',audioLifecycle:'pass',videoSoundtrack:'pass'};
  if(require.main===module)console.log(JSON.stringify(result,null,2));
  return result;
 })().catch(e=>{if(require.main===module){console.error(e);process.exitCode=1;}else throw e;});
