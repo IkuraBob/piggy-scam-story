@@ -121,8 +121,8 @@ const STORY = {
     scene: { emoji: "📞👮📄", bg: "linear-gradient(135deg,#9fb8d9,#d8e3f2)", tag: { en: "Week 2 · 9:15 AM", zh: "第 2 周 · 上午 9:15" } },
     phone: { kind: "doc", from: { en: "Video call · 'Officer Wang'", zh: "视频通话 · “王警官”" }, text: { en: "ARREST WARRANT\nSuspect: MIA CHEN\nCase: Cross-border money laundering", zh: "通缉令\n嫌疑人：MIA CHEN\n案由：跨境洗钱" } },
     lines: [
-      { who: { en: "Recording", zh: "录音" }, text: { en: "This is HK Express Courier. Your parcel to Shanghai contains 12 fake passports. Press 1 to speak to the Mainland Public Security Bureau.", zh: "这里是 HK Express Courier。你寄往上海的包裹内有 12 本假护照。请按 1 转接内地公安局。" } },
-      { who: { en: "Wang", zh: "王警官" }, text: { en: "This case is TOP SECRET. Tell anyone — even your roommate — and you'll be charged too.", zh: "本案绝对保密。告诉任何人——包括室友——你也会被起诉。" } }
+      { who: { en: "Recording", zh: "录音" }, text: { en: "HK Express Courier. Your parcel holds 12 fake passports. Press 1 for the Mainland police.", zh: "HK Express 快递。你的包裹里有 12 本假护照。按 1 转接内地公安。" } },
+      { who: { en: "Wang", zh: "王警官" }, text: { en: "This case is TOP SECRET. Tell anyone — even your roommate — and you're charged too.", zh: "本案绝对保密。告诉任何人——包括室友——你也会被起诉。" } }
     ],
     redFlags: [{ en: "A 'courier' call that transfers you to 'police'", zh: "“快递公司”来电转接到“公安”" }, { en: "A warrant shown over video call", zh: "通过视频通话出示通缉令" }, { en: "Demands secrecy — don't tell anyone", zh: "要求保密，不许告诉任何人" }, { en: "Mainland officers don't handle cases by phone in Hong Kong", zh: "内地执法人员不会通过电话在香港办案" }],
     choices: [
@@ -145,9 +145,9 @@ const STORY = {
     chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "The 'Safety Account'", zh: "所谓的“安全账户”" }, kind: "video", media: null, pos: [6, 2],
     scene: { emoji: "👮🏨🔒", bg: "linear-gradient(135deg,#7f8fb3,#b9c3db)", tag: { en: "Week 2 · 10:02 AM", zh: "第 2 周 · 上午 10:02" } },
     lines: [
-      { who: { en: "Wang", zh: "王警官" }, text: { en: "To prove your innocence, transfer your funds to our 'safety supervision account'.", zh: "要证明清白，请把资金转入我们的“安全监管账户”。" } },
-      { who: { en: "Wang", zh: "王警官" }, text: { en: "Then check into a hotel ALONE. Turn off your phone to your family.", zh: "然后独自入住酒店。不要让家人联系到你的手机。" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Mia... why is a policeman asking for ME?", zh: "Mia……警察为什么会想要我？" } }
+      { who: { en: "Wang", zh: "王警官" }, text: { en: "Prove your innocence: move your money to our 'safety account'.", zh: "要证明清白，就把钱转到我们的\"安全账户\"。" } },
+      { who: { en: "Wang", zh: "王警官" }, text: { en: "Then stay in a hotel. Alone. Tell no one.", zh: "然后去酒店住。一个人。谁也别告诉。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Why does a policeman want ME?", zh: "警察为什么要我？" } }
     ],
     redFlags: [{ en: "Police never hold your money in a 'safety account'", zh: "警方不会用“安全账户”保管你的钱" }, { en: "Isolating you from family and friends", zh: "让你与亲友隔绝" }, { en: "Fear + secrecy = scam", zh: "恐惧加保密，就是骗局" }],
     choices: [
@@ -189,8 +189,8 @@ const STORY = {
     enter: { money: +3000, recovered: true },
     phone: { kind: "call", from: { en: "Anti-Scam Helpline 18222", zh: "防骗易热线 18222" }, text: { en: "Connected", zh: "已接通" } },
     lines: [
-      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "This is a fake-official scam. Next they'd fake a video of you 'kidnapped' to get ransom from your parents.", zh: "这是冒充官员诈骗。下一步，他们会伪造你“被绑架”的视频，向你父母索要赎金。" } },
-      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "We've contacted your bank — the HK$3,000 transfer is frozen.", zh: "我们已联系银行——港币 3,000 元的转账已被冻结。" } },
+      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "It's a fake-official scam. Next, they'd fake your kidnapping to get ransom from your parents.", zh: "这是冒充官员诈骗。下一步，他们会伪造你被绑架，向你父母勒索赎金。" } },
+      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "Your HK$3,000 transfer is frozen.", zh: "你那笔港币 3,000 元的转账已被冻结。" } },
       { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Never underestimate a nosy roommate.", zh: "永远别小看爱管闲事的室友。" } }
     ],
     flag: { en: "Broke the secrecy & got help", zh: "打破保密要求，主动求助" },
@@ -203,9 +203,9 @@ const STORY = {
     scene: { emoji: "🌙📹👩‍🦳", bg: "linear-gradient(135deg,#1f2340,#454a7a)", tag: { en: "Week 5 · 2:03 AM", zh: "第 5 周 · 凌晨 2:03" }, glitch: true },
     phone: { kind: "call", from: { en: "Mom ❤️ (new account)", zh: "妈妈 ❤️（新账号）" }, text: { en: "Video call", zh: "视频通话" } },
     lines: [
-      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Sweetie, my phone broke, I'm on Auntie's account. Grandpa's in hospital — they need a HK$4,000 deposit NOW.", zh: "宝贝，我手机坏了，用的是阿姨的账号。外公住院了——现在就要港币 4,000 元押金。" } },
-      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Don't call Dad, he's with the doctors. Hurry!", zh: "别打给爸爸，他正跟医生在一起。快点！" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Wait. Why does Mom blink like a screensaver?", zh: "等等，妈妈眨眼怎么像屏幕保护程序？" } }
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Sweetie, my phone broke. Grandpa's in hospital — send HK$4,000 to Auntie's account NOW.", zh: "宝贝，我手机坏了。外公住院了——马上转港币 4,000 元到阿姨的账户。" } },
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Don't call Dad. Hurry!", zh: "别打给爸爸。快点！" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Why does Mom blink like a screensaver?", zh: "妈妈眨眼怎么像屏幕保护程序？" } }
     ],
     redFlags: [{ en: "A brand-new account", zh: "全新的账号" }, { en: "Money, urgently, at 2 AM", zh: "凌晨两点急着要钱" }, { en: "Stops you checking with other family", zh: "阻止你找其他家人核实" }, { en: "Glitches: lip-sync, blinking, blurry face edges", zh: "画面破绽：口型、眨眼和模糊的脸部边缘" }, { en: "Pay to a third-party account", zh: "要求转账到第三方账户" }],
     choices: [
@@ -218,10 +218,10 @@ const STORY = {
     chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "The Dog Question", zh: "关于小狗的问题" }, kind: "video", media: null, pos: [10, 0],
     scene: { emoji: "🐶❓👩‍🦳", bg: "linear-gradient(135deg,#ffe6f0,#fff5e6)", tag: { en: "Week 5 · 2:05 AM", zh: "第 5 周 · 凌晨 2:05" } },
     lines: [
-      { who: { en: "Mia", zh: "Mia" }, text: { en: "Mom, what was the name of our first dog?", zh: "妈，我们家第一只狗叫什么名字？" } },
-      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Sweetie… no time for g-g-games!  *call dropped*", zh: "宝贝……没时间玩、玩游戏！*通话断开*" } },
-      { who: { en: "Real Mom", zh: "真正的妈妈" }, text: { en: "Mia? It's 2 AM... Grandpa's fine, he's snoring right next to me.", zh: "Mia？现在凌晨两点……外公没事，就在我旁边打呼噜呢。" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "AI can copy a face. It can't copy your memories.", zh: "AI 能复制一张脸，却复制不了你们的回忆。" } }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Mom, what was our first dog's name?", zh: "妈，我们家第一只狗叫什么？" } },
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "No time for g-g-games! *call dropped*", zh: "没时间玩、玩游戏！*通话断开*" } },
+      { who: { en: "Real Mom", zh: "真正的妈妈" }, text: { en: "Mia? It's 2 AM. Grandpa's fine — he's snoring next to me.", zh: "Mia？凌晨两点了。外公没事——他就在我旁边打呼噜。" } },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "AI can copy a face. Not your memories.", zh: "AI 能复制脸，复制不了回忆。" } }
     ],
     flag: { en: "Beat a deepfake with a secret question", zh: "用共同记忆的问题识破深伪" },
     branch: { ifLost: "end_comeback", else: "end_slayer" }

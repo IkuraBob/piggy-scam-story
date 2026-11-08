@@ -19,6 +19,16 @@ function walk(id,state,depth=0) {
   else walk(n.branch?(s.lost?n.branch.ifLost:n.branch.else):n.next,s,depth+1);
 }
 walk('intro',{money:8000,lost:false}); assert.equal(endings.size,4);
+// Spoken words: contractions, hyphenated compounds and numbers count as one;
+// stage directions in *asterisks* are not spoken dialogue.
+const videoWordCounts = {};
+for (const [id, n] of Object.entries(STORY)) {
+  if (n.kind !== 'video') continue;
+  const spoken = n.lines.map(line => line.text.en.replace(/\*[^*]*\*/g, '')).join(' ');
+  const words = spoken.match(/[A-Za-z0-9]+(?:['’,-][A-Za-z0-9]+)*/g) || [];
+  videoWordCounts[id] = words.length;
+  assert.ok(words.length <= 30, `${id}: ${words.length} spoken English words exceeds 30`);
+}
 function checkText(v,key='') {
   if(Array.isArray(v)){v.forEach(x=>checkText(x,key));return;}
   if(v&&typeof v==='object') {
@@ -80,7 +90,7 @@ module.exports = (async()=>{
  audio.setMuted(true);assert.equal(gains[0].gain.value,0);audio.sfx('coin');assert.equal(tones.length,3);audio.setMuted(false);
  audio.stopVoice();assert.ok(voice.paused);assert.equal(audio.voiceActive,false);
  audios[2].onerror();audio.mood('ch2');await Promise.resolve();assert.equal(audios[3].src,'media/audio/bgm-ch2.mp3');
- const result = {syntax:'pass',storyPaths:paths,endings:[...endings].map(([id,money])=>({id,balances:[...money].sort((a,b)=>a-b)})),bilingualText:'pass',subtitleClocks:'pass',security:'pass',audioLifecycle:'pass'};
+ const result = {syntax:'pass',storyPaths:paths,endings:[...endings].map(([id,money])=>({id,balances:[...money].sort((a,b)=>a-b)})),bilingualText:'pass',videoWordCounts,subtitleClocks:'pass',security:'pass',audioLifecycle:'pass'};
  if(require.main===module)console.log(JSON.stringify(result,null,2));
  return result;
 })().catch(e=>{if(require.main===module){console.error(e);process.exitCode=1;}else throw e;});
