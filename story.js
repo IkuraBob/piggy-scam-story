@@ -265,7 +265,7 @@ const STORY = {
   end_faceswap: {
     chapter: { en: "Ending", zh: "结局" }, title: { en: "Face Swapped", zh: "换脸陷阱" }, kind: "image", media: null, pos: [11, 3],
     scene: { emoji: "🎭🐷🕳️", bg: "linear-gradient(135deg,#3a2a4a,#6a4a6a)", tag: { en: "One week later", zh: "一周后" } },
-    lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "...echo... echo... I'm empty.", zh: "……回声……回声……我空了。" } }],
+    lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "Four thousand dollars... gone. And Mia hasn't told a single soul.", zh: "四千块……没了。而 Mia 一个人都没告诉。" } }],
     ending: { badge: "🎭", good: false, title: { en: "FACE SWAPPED", zh: "换脸陷阱" }, text: { en: "A deepfake needs only seconds of a voice and a few selfies. Shame kept Mia quiet — and the money disappeared.", zh: "深伪只需要几秒语音和几张自拍。羞耻感让 Mia 保持沉默，钱也随之消失。" }, rewind: "c3_sent" }
   }
 };
