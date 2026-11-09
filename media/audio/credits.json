@@ -1,0 +1,58 @@
+[
+  {
+    "mood": "home",
+    "title": "Carefree",
+    "artist": "Kevin MacLeod",
+    "isrc": "USUAN1400037",
+    "source": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400037",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "file": "media/audio/bgm-home.mp3",
+    "duration": 205.14,
+    "bytes": 3283157,
+    "sha256": "bdbcf85208a84b310c3de1ff90a31edff622038c70dd44abf704d222cef988f6",
+    "changes": "Loudness normalized to -18 LUFS target; 0.15 s fade-in and 0.3 s fade-out; MP3 128 kbps, 44.1 kHz stereo. Full musical sequence retained."
+  },
+  {
+    "mood": "ch1",
+    "title": "Sneaky Snitch",
+    "artist": "Kevin MacLeod",
+    "isrc": "USUAN1100772",
+    "source": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100772",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "file": "media/audio/bgm-ch1.mp3",
+    "duration": 136.62,
+    "bytes": 2186855,
+    "sha256": "98651bcf4a2ea5d964e1dd31b52e3d8daf5bb8e831d7e89db6f0b5a632f9fe32",
+    "changes": "Loudness normalized to -18 LUFS target; 0.15 s fade-in and 0.3 s fade-out; MP3 128 kbps, 44.1 kHz stereo. Full musical sequence retained."
+  },
+  {
+    "mood": "ch2",
+    "title": "Crypto",
+    "artist": "Kevin MacLeod",
+    "isrc": "USUAN1600013",
+    "source": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1600013",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "file": "media/audio/bgm-ch2.mp3",
+    "duration": 204.07,
+    "bytes": 3266019,
+    "sha256": "67928a23044fba60c80c9b187f1268fffeaea2216ddba031c797c78b726b9fce",
+    "changes": "Loudness normalized to -18 LUFS target; 0.15 s fade-in and 0.3 s fade-out; MP3 128 kbps, 44.1 kHz stereo. Full musical sequence retained."
+  },
+  {
+    "mood": "ch3",
+    "title": "Dreams Become Real",
+    "artist": "Kevin MacLeod",
+    "isrc": "USUAN1500027",
+    "source": "https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1500027",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "file": "media/audio/bgm-ch3.mp3",
+    "duration": 410.07,
+    "bytes": 6562057,
+    "sha256": "37b23cab261c0dd32a5ccb7cdc6510d49f3e2825cd55b644039fed6df1ec44cf",
+    "changes": "Loudness normalized to -18 LUFS target; 0.15 s fade-in and 0.3 s fade-out; MP3 128 kbps, 44.1 kHz stereo. Full musical sequence retained."
+  }
+]
