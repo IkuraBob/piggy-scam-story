@@ -3,7 +3,8 @@ const PiggyAudio = (() => {
   let context, master, unlocked = false, muted = false, currentMood = null;
   let videoPlaying = false;
   let voiceActive = false, voiceVersion = 0, currentTrack = null;
-  const tracks = new Map();
+  let musicVersion = 0, musicRequest = null;
+  const retiringTracks = new Set();
   const voice = new Audio();
   voice.preload = 'auto';
   let voiceGain;
@@ -30,16 +31,17 @@ const PiggyAudio = (() => {
       } catch { return; }
     }
     if (context.state !== 'running') context.resume().catch(() => {});
-    // A fresh page needs a gesture even when the stored preference is sound-on.
-    // Retry a track interrupted or blocked by the browser without restarting it.
-    if (currentTrack?.audio.paused) playMusic(currentTrack);
+    // Schedule a silent buffer in the gesture itself to activate the output path.
+    const prime = context.createBufferSource();
+    prime.buffer = context.createBuffer(1, 1, context.sampleRate);
+    prime.connect(master); prime.onended = () => prime.disconnect(); prime.start();
   }
   function setMuted(value) {
     muted = value; voice.muted = value;
     // BGM is muted through master gain only, avoiding media unmute autoplay rules.
     ramp(master, muted ? 0 : 1, .16);
     try { localStorage.setItem('piggy.muted', String(muted)); } catch {}
-    if (!muted && currentTrack) playMusic(currentTrack);
+    if (!muted && currentTrack) ramp(currentTrack.gain, musicLevel(), .16);
   }
   function musicLevel() { return voiceActive ? .06 : videoPlaying ? .05 : .2; }
   function duck(on) {
@@ -50,37 +52,50 @@ const PiggyAudio = (() => {
     videoPlaying = !!on;
     if (currentTrack) ramp(currentTrack.gain, musicLevel(), .32);
   }
-  function playMusic(track) {
-    if (!unlocked || track.failed) return;
-    track.audio.play().then(() => {
-      if (currentTrack === track) ramp(track.gain, musicLevel());
-    }).catch(() => {}); // A later user gesture retries blocked playback.
+  function releaseMusic(track) {
+    clearTimeout(track.stop);
+    try { track.source.stop(); } catch {}
+    track.source.disconnect(); track.source.buffer = null; track.gain.disconnect();
+    retiringTracks.delete(track);
   }
-  function mood(name) {
-    if (!unlocked) return;
-    if (name === currentMood) {
-      if (currentTrack?.audio.paused) playMusic(currentTrack);
-      return;
-    }
+  async function mood(name) {
+    if (!unlocked || !['home', 'ch1', 'ch2', 'ch3'].includes(name)) return;
+    if (name === currentMood && (currentTrack || musicRequest)) return;
     currentMood = name;
-    const previous = currentTrack;
-    if (previous) {
-      ramp(previous.gain, 0);
-      clearTimeout(previous.stop);
-      previous.stop = setTimeout(() => { if (currentTrack !== previous) previous.audio.pause(); }, 650);
-    }
-    let track = tracks.get(name);
-    if (!track) {
-      const audio = new Audio(); audio.loop = true; audio.preload = 'auto';
+    const version = ++musicVersion;
+    musicRequest?.abort();
+    const request = new AbortController(); musicRequest = request;
+    // Only the current decoded track and a short outgoing crossfade are retained.
+    // BGM never calls HTMLMediaElement.play(), which has a separate autoplay gate.
+    try {
+      const response = await fetch(`media/audio/bgm-${name}.mp3`, {
+        signal: request.signal, credentials: 'omit', mode: 'same-origin', redirect: 'error'
+      });
+      if (!response.ok) throw new Error('Missing music');
+      const bytes = await response.arrayBuffer();
+      if (version !== musicVersion) return;
+      const buffer = await context.decodeAudioData(bytes);
+      if (version !== musicVersion) return;
+      retiringTracks.forEach(releaseMusic);
+      const previous = currentTrack;
       const gain = context.createGain(); gain.gain.value = 0; gain.connect(master);
-      context.createMediaElementSource(audio).connect(gain);
-      track = { audio, gain, failed: false };
-      audio.onerror = () => { track.failed = true; audio.pause(); };
-      audio.src = `media/audio/bgm-${name}.mp3`;
-      tracks.set(name, track);
+      const source = context.createBufferSource(); source.buffer = buffer;
+      source.loop = true; source.connect(gain); source.start();
+      currentTrack = { source, gain };
+      ramp(gain, musicLevel());
+      if (previous) {
+        ramp(previous.gain, 0); retiringTracks.add(previous);
+        previous.stop = setTimeout(() => releaseMusic(previous), 650);
+      }
+    } catch {
+      if (version === musicVersion) {
+        // Missing/failed music leaves this mood silent and can retry on revisiting.
+        if (currentTrack) releaseMusic(currentTrack);
+        currentTrack = null; currentMood = null;
+      }
+    } finally {
+      if (version === musicVersion) musicRequest = null;
     }
-    currentTrack = track; clearTimeout(track.stop);
-    playMusic(track);
   }
   function stopVoice() {
     voiceVersion++; voice.pause(); voice.onended = voice.onerror = voice.onloadedmetadata = null;

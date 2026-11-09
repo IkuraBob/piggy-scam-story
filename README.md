@@ -27,7 +27,8 @@ See [music credits](media/audio/CREDITS.md) for authorship, CC BY 4.0 licenses a
 Audio paths:
 
 - `bgm-home.mp3`, `bgm-ch1.mp3`, `bgm-ch2.mp3`, `bgm-ch3.mp3`: looping music,
-  crossfaded over 600 ms.
+  decoded into Web Audio buffers and crossfaded over 600 ms. Only the current
+  decoded track and its outgoing crossfade are retained.
 - `<nodeId>.mp3`: narration. Its playback clock drives subtitles, and music drops
   to 30% of its usual gain while it plays.
 - Gain, loss, red-flag and final-five-second fuse sounds are synthesized locally
@@ -49,8 +50,9 @@ story link and download a PNG ending card. The quiz is separate from story choic
 There is no analytics service or outgoing data submission. Endings, language and
 mute preferences are stored locally with failure-safe access. Fonts are served
 locally; their SIL Open Font License notices are in `assets/fonts/`. The entry
-pages use a CSP with no inline scripts, no inline style attributes and no network
-connections. Dynamic text is built with text nodes and `textContent`.
+pages use a CSP with no inline scripts or inline style attributes. Scripted
+connections are limited to same-origin BGM downloads; external connections remain
+blocked. Dynamic text is built with text nodes and `textContent`.
 
 ## Checks
 

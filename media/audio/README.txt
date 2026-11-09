@@ -17,6 +17,9 @@ positions in seconds. Skip stops both the video and any narration override.
 
 Everything stays silent before the first user click. The HUD mute toggle controls
 video, narration, BGM and effects; its preference is stored on this device only.
+Music uses AudioBufferSourceNode through the gesture-unlocked AudioContext, not
+a separate HTML audio player. Same-origin fetch loads the MP3, then decodeAudioData
+prepares the loop. Only current/outgoing tracks remain decoded in memory.
 Music crossfades over 600 ms. While a video with audio plays, music drops to 25%
 of its normal gain (30% with a narration override). It returns to normal on image
 nodes and choice/Continue/ending overlays. Browsers that cannot report whether a

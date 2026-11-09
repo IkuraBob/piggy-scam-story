@@ -45,7 +45,7 @@ checkText(STORY); checkText(QUIZ);
 assert.equal(QUIZ.length,3);QUIZ.forEach(q=>assert.ok(q.correct>=0&&q.correct<q.answers.length));
 assert.ok(!/innerHTML|insertAdjacentHTML|eval\(/.test(read('app.js')));
 assert.ok(!/https?:\/\//.test(read('audio.js')));
-assert.ok(read('index.html').includes("connect-src 'none'"));
+assert.ok(read('index.html').includes("connect-src 'self'"));
 assert.ok(!read('index.html').includes('https://fonts.'));
 
 // Check explicit cues and the video/voice clock, including paused playback.
@@ -98,7 +98,7 @@ async function checkVideoPlayback() {
 }
 
 // Exercise real audio module logic using deterministic media/Web Audio doubles.
-const audios=[], gains=[], tones=[], jobs=new Map(); let job=0;
+const audios=[], gains=[], tones=[], buffers=[], contexts=[], jobs=new Map(); let job=0;
 class Param { constructor(v=0){this.value=v;this.targets=[];} setValueAtTime(v){this.value=v;} cancelScheduledValues(){} linearRampToValueAtTime(v){this.value=v;this.targets.push(v);} exponentialRampToValueAtTime(v){this.value=v;this.targets.push(v);} }
 class Gain {constructor(){this.gain=new Param();gains.push(this);}connect(){}disconnect(){}}
 class Media {
@@ -108,64 +108,56 @@ class Media {
  removeAttribute(){this._src='';}load(){if(this._src)queueMicrotask(()=>this.onloadedmetadata?.());}
 }
 class Context {
- constructor(){this.currentTime=0;this.state='running';this.sampleRate=8000;}
- resume(){return Promise.resolve();}createGain(){return new Gain();}
+ constructor(){this.currentTime=0;this.state='suspended';this.sampleRate=8000;contexts.push(this);}
+ resume(){this.state="running";return Promise.resolve();}createGain(){return new Gain();}
  createMediaElementSource(){return {connect(){}};}
  createOscillator(){const s={frequency:new Param(),connect(){},disconnect(){},start(){},stop(){}};tones.push(s);return s;}
  createBuffer(c,n){return {getChannelData:()=>new Float32Array(n)};}
- createBufferSource(){return {connect(){},disconnect(){},start(){},stop(){}};}
+ decodeAudioData(bytes){return Promise.resolve({decoded:bytes});}
+ createBufferSource(){const s={connect(){},disconnect(){this.disconnected=true;},start(){this.started=true;},stop(){this.stopped=true;}};buffers.push(s);return s;}
  createBiquadFilter(){return {frequency:new Param(),connect(){},disconnect(){}};}
 }
-const sandbox={Audio:Media,window:{AudioContext:Context},localStorage:{getItem(){return null;},setItem(){}},setTimeout:f=>{jobs.set(++job,f);return job;},clearTimeout:id=>jobs.delete(id),Math};
+const sandbox={AbortController,fetch:async url=>({ok:true,arrayBuffer:async()=>url}),Audio:Media,window:{AudioContext:Context},localStorage:{getItem(){return null;},setItem(){}},setTimeout:f=>{jobs.set(++job,f);return job;},clearTimeout:id=>jobs.delete(id),Math};
 const audio=vm.runInNewContext(read('audio.js')+'; PiggyAudio',sandbox);
 module.exports = (async()=>{
  await checkVideoPlayback();
  audio.sfx('coin'); assert.equal(tones.length,0,'No sound before first click');
  audio.unlock();audio.sfx('coin');audio.sfx('loss');audio.sfx('stamp');audio.sfx('hiss');assert.equal(tones.length,3);
- audio.mood('home');const homeGain=gains.at(-1);await Promise.resolve();assert.equal(audios[1].src,'media/audio/bgm-home.mp3');assert.equal(homeGain.gain.value,.2);
- audio.mood('ch1');const ch1Gain=gains.at(-1);await Promise.resolve();assert.equal(homeGain.gain.value,0);assert.equal(ch1Gain.gain.value,.2);
- audio.setVideoPlaying(true);assert.equal(ch1Gain.gain.value,.05,'Video ducks BGM to 25%');
+ await audio.mood('home'); const homeGain=gains.at(-1), home=buffers.at(-1);
+ assert.equal(home.buffer.decoded,'media/audio/bgm-home.mp3');assert.equal(home.started,true);assert.equal(home.loop,true);
+ assert.equal(homeGain.gain.value,.2);assert.equal(audios.length,1,'No BGM HTML audio elements');
+ await audio.mood('ch1');const ch1Gain=gains.at(-1);assert.equal(homeGain.gain.value,0);assert.equal(ch1Gain.gain.value,.2);
+ for(const fn of [...jobs.values()]) fn(); jobs.clear();
+ assert.equal(home.stopped,true);assert.equal(home.buffer,null,'Release outgoing decoded PCM');
+ audio.setVideoPlaying(true);assert.equal(ch1Gain.gain.value,.05);
+ let ended=false;const voice=await audio.startVoice('intro',()=>{ended=true;});assert.equal(voice.duration,3);assert.equal(ch1Gain.gain.value,.06);
+ voice.onended();assert.equal(ended,true);assert.equal(ch1Gain.gain.value,.05);
  audio.setVideoPlaying(false);assert.equal(ch1Gain.gain.value,.2);
- audio.setVideoPlaying(true);
- let ended=false;const voice=await audio.startVoice('intro',()=>{ended=true;});assert.equal(voice.duration,3);assert.equal(ch1Gain.gain.value,.06,'Voice ducks music to 30%');
- voice.onended();assert.equal(ended,true);assert.equal(ch1Gain.gain.value,.05,'Video remains ducked after narration');
- audio.setVideoPlaying(false);assert.equal(ch1Gain.gain.value,.2);
- audio.setMuted(true);assert.equal(gains[0].gain.value,0);audio.sfx('coin');assert.equal(tones.length,3);audio.setMuted(false);
+ const beforeToggle=buffers.length;
+ audio.setMuted(true);assert.equal(gains[0].gain.value,0);audio.sfx('coin');assert.equal(tones.length,3);
+ audio.setMuted(false);assert.equal(gains[0].gain.value,1);assert.equal(buffers.length,beforeToggle,'Mute must not restart the music');
  audio.stopVoice();assert.ok(voice.paused);assert.equal(audio.voiceActive,false);
- audios[2].onerror();audio.mood('ch2');await Promise.resolve();assert.equal(audios[3].src,'media/audio/bgm-ch2.mp3');
- // Recovery after a browser rejects the first BGM play request.
- audio.mood('ch3'); await Promise.resolve();
- const retryTrack = audios.at(-1), retryGain = gains.at(-1);
- audio.mood('home'); await Promise.resolve();
- retryTrack.play = function () { this.paused = true; return Promise.reject(new Error('NotAllowedError')); };
- audio.mood('ch3'); await Promise.resolve(); await Promise.resolve();
- assert.equal(retryGain.gain.value,0);
- retryTrack.play = function () { this.paused = false; return Promise.resolve(); };
- audio.setMuted(true); audio.setMuted(false); await Promise.resolve();
- assert.equal(retryTrack.paused,false,'Unmute retries blocked BGM');
- assert.equal(retryGain.gain.value,.2,'Unmute restores gain after blocked BGM playback');
- // Later gestures resume interrupted audio and retry the same mood.
- retryTrack.paused = true; retryGain.gain.value = 0;
- audio.unlock(); await Promise.resolve();
- assert.equal(retryTrack.paused,false,'A new gesture retries current music');
- assert.equal(retryGain.gain.value,.2);
- retryTrack.paused = true; retryGain.gain.value = 0;
- audio.mood('ch3'); await Promise.resolve();
- assert.equal(retryGain.gain.value,.2,'Same mood can recover after a blocked play');
- audio.setMuted(true);
- assert.notEqual(retryTrack.muted,true,'BGM mute uses master gain, not media unmute');
- assert.equal(gains[0].gain.value,0);
- // Stored preferences must never cause playback before a gesture on a fresh page.
- for (const stored of ['true','false']) {
-   const before = audios.length;
-   const fresh = vm.runInNewContext(read('audio.js')+'; PiggyAudio',
-     {...sandbox,localStorage:{getItem(){return stored;},setItem(){}}});
-   fresh.mood('home'); assert.equal(audios.length,before+1);
-   assert.equal(fresh.unlocked,false);
-   fresh.unlock(); fresh.mood('home'); await Promise.resolve();
-   assert.equal(audios.at(-1).paused,false);
-   assert.equal(fresh.muted,stored==='true');
+ contexts[0].state='interrupted';audio.unlock();assert.equal(contexts[0].state,'running');
+ // Fresh page: saved sound preference does not replace first-gesture activation.
+ for(const stored of ['true','false']){
+  const fresh=vm.runInNewContext(read('audio.js')+'; PiggyAudio',{...sandbox,localStorage:{getItem(){return stored;},setItem(){}}});
+  const before=buffers.length; await fresh.mood('home');assert.equal(buffers.length,before);
+  fresh.unlock(); const masterGain=gains.at(-2); await fresh.mood('home');
+  assert.equal(buffers.at(-1).started,true);assert.equal(masterGain.gain.value,stored==='true'?0:1);
+  fresh.setMuted(false);assert.equal(masterGain.gain.value,1);
  }
+ // Slow old requests must not replace a newer mood; failed files remain silent.
+ const pending=[];
+ const race=vm.runInNewContext(read('audio.js')+'; PiggyAudio',{...sandbox,fetch:(url,options)=>new Promise(resolve=>pending.push({url,options,resolve}))});
+ race.unlock();const old=race.mood('home'), latest=race.mood('ch3');
+ assert.equal(pending[0].options.signal.aborted,true);
+ pending[1].resolve({ok:true,arrayBuffer:async()=> 'new'});await latest;const active=buffers.at(-1);
+ pending[0].resolve({ok:true,arrayBuffer:async()=> 'old'});await old;assert.equal(buffers.at(-1),active);
+ assert.equal(active.buffer.decoded,'new');
+ const fail=race.mood('ch2');pending[2].resolve({ok:false});await fail;
+ assert.equal(active.stopped,true);assert.equal(active.buffer,null);
+ const retry=race.mood('ch2');pending[3].resolve({ok:true,arrayBuffer:async()=> 'retry'});await retry;
+ assert.equal(buffers.at(-1).buffer.decoded,'retry');
  const result = {syntax:'pass',storyPaths:paths,endings:[...endings].map(([id,money])=>({id,balances:[...money].sort((a,b)=>a-b)})),bilingualText:'pass',videoWordCounts,subtitleClocks:'pass',security:'pass',audioLifecycle:'pass',videoSoundtrack:'pass'};
  if(require.main===module)console.log(JSON.stringify(result,null,2));
  return result;

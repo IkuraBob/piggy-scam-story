@@ -63,3 +63,35 @@ for both saved-mute states after refresh. All four endings passed at 1280px and
 were removed and are not deployed. These checks are desktop browser evidence,
 not iOS/Android hardware confirmation; the user's phone symptom is not yet
 confirmed resolved.
+
+## Mobile report persists: buffer playback · 2026-11-09
+
+The user confirmed that the previous retry patch did not resolve the phone symptom:
+BGM still needed a mute/unmute cycle regardless of the initial preference.
+The earlier desktop checks must not be taken as proof of an iOS fix.
+
+BGM now uses decoded AudioBufferSourceNodes in the same gesture-unlocked AudioContext
+as effects, instead of creating HTML audio elements with their own autoplay gate.
+The click handler resumes the context and schedules one silent sample immediately;
+a downloaded/decoded BGM buffer can then start without another media play request.
+Mute only changes master gain and does not restart music. Four approved MP3s remain
+unchanged. The current decoded track and outgoing crossfade are retained; obsolete
+loads are aborted and late decodes are ignored. Outgoing PCM is released after 650 ms.
+
+CSP changes from `connect-src 'none'` to `connect-src 'self'` to read the site's own
+MP3 files. Fetch uses same-origin mode, omits credentials and rejects redirects.
+No external audio service, telemetry or outgoing choice data is added. Script URLs
+carry `buffer-bgm-2` so a stale mobile cache cannot keep the previous player.
+
+Validation passed: `tests/check.cjs` covers 40 story paths and balances, both
+stored mute states, same-context playback without BGM media elements, ducking,
+interruption resume, release of outgoing PCM, failed-file silence/retry and stale
+request cancellation. Browser diagnostics measured nonzero output RMS after Start
+alone with saved sound-on, zero output after Start with saved mute, and nonzero
+output after one unmute. Before the first click no context/source exists.
+All four endings passed at 1280px and 375px with balances 8000/5050/1050/2050;
+production layout has no horizontal overflow and the checked browser logs were empty.
+Evidence: project `tests-suno/buffer-bgm-start-check.json` and
+`buffer-bgm-routes.json`. Diagnostic pages were removed before committing.
+Phone hardware remains unavailable; user confirmation is required before calling
+the reported phone symptom resolved.
