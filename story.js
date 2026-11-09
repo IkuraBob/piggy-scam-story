@@ -121,8 +121,8 @@ const STORY = {
     scene: { emoji: "📞👮📄", bg: "linear-gradient(135deg,#9fb8d9,#d8e3f2)", tag: { en: "Week 2 · 9:15 AM", zh: "第 2 周 · 上午 9:15" } },
     phone: { kind: "doc", from: { en: "Video call · 'Officer Wang'", zh: "视频通话 · “王警官”" }, text: { en: "ARREST WARRANT\nSuspect: MIA CHEN\nCase: Cross-border money laundering", zh: "通缉令\n嫌疑人：MIA CHEN\n案由：跨境洗钱" } },
     lines: [
-      { who: { en: "Recording", zh: "录音" }, text: { en: "HK Express Courier. Your parcel holds 12 fake passports. Press 1 for the Mainland police.", zh: "HK Express 快递。你的包裹里有 12 本假护照。按 1 转接内地公安。" } },
-      { who: { en: "Wang", zh: "王警官" }, text: { en: "This case is TOP SECRET. Tell anyone — even your roommate — and you're charged too.", zh: "本案绝对保密。告诉任何人——包括室友——你也会被起诉。" } }
+      { who: { en: "Recording", zh: "录音" }, text: { en: "HK Express Courier. Your parcel holds 12 fake passports. Press 1 for the Mainland police.", zh: "HK Express 快递。你的包裹里有 12 本假护照。按 1 转接内地公安。" }, t: 0.4 },
+      { who: { en: "Wang", zh: "王警官" }, text: { en: "This case is TOP SECRET. Tell anyone — even your roommate — and you're charged too.", zh: "本案绝对保密。告诉任何人——包括室友——你也会被起诉。" }, t: 7.7 }
     ],
     redFlags: [{ en: "A 'courier' call that transfers you to 'police'", zh: "“快递公司”来电转接到“公安”" }, { en: "A warrant shown over video call", zh: "通过视频通话出示通缉令" }, { en: "Demands secrecy — don't tell anyone", zh: "要求保密，不许告诉任何人" }, { en: "Mainland officers don't handle cases by phone in Hong Kong", zh: "内地执法人员不会通过电话在香港办案" }],
     choices: [
