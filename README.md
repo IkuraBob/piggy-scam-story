@@ -21,7 +21,10 @@ entries discover those names automatically. A custom local filename can still be
 set in `story.js`. Missing files use placeholders. Next-node assets preload while
 the current node plays.
 
-Optional audio lives in `media/audio/`:
+Four approved background tracks are bundled in `media/audio/` (2026-11-09).
+See [music credits](media/audio/CREDITS.md) for authorship, CC BY 4.0 licenses and processing.
+
+Audio paths:
 
 - `bgm-home.mp3`, `bgm-ch1.mp3`, `bgm-ch2.mp3`, `bgm-ch3.mp3`: looping music,
   crossfaded over 600 ms.
@@ -69,10 +72,10 @@ missing-media fallback and language switching. Logic checks cover all 40 complet
 paths and the audio lifecycle. Local synthetic audio fixtures exercised browser
 playback, music switching and narration; these fixtures are not shipped.
 
-Still to verify: final video/MP3 assets, audible mix with real narration, iOS Safari
-and Android Chrome on physical devices, and the published site after approval to
-push. Existing story wording says Piggy is empty in Face Swapped, although some
-routes retain money; the original text and balance rules have been preserved.
+The above table is the original 2026-11-07 check record. Current music integration
+and verification are documented in [BGM production](planning/bgm-production.md).
+Physical iOS Safari / Android Chrome testing and a human review of the final
+dialogue/music mix remain outstanding.
 
 
 2026-11-09：c3 已采用组员确认的 v1 画面与 ElevenLabs 妈妈配音（1.28 倍速），字幕时间同步更新。详见 [c3 制作与验证记录](planning/c3-production.md)。
