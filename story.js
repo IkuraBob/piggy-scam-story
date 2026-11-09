@@ -29,9 +29,9 @@ const STORY = {
     chapter: { en: "Prologue", zh: "序章" }, title: { en: "Meet Piggy", zh: "认识 Piggy" }, kind: "video", media: null, pos: [0, 1],
     scene: { emoji: "🧳🏠🐷", bg: "linear-gradient(135deg,#ffd6e7,#ffe9c7)", tag: { en: "Move-in day · Hall room", zh: "搬入宿舍 · 房间" } },
     lines: [
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Hi. I'm Piggy. Inside me: HK$8,000 — Mia's ENTIRE semester of living money.", zh: "嗨，我是 Piggy。我肚子里装着港币 8,000 元——Mia 整个学期的生活费。" } },
-      { who: { en: "Mia", zh: "Mia" }, text: { en: "New city, new uni, new me. What could possibly go wrong?", zh: "新城市，新大学，全新的我。能出什么问题呢？" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "...Famous last words.", zh: "……这话听着就不妙。" } }
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Hi. I'm Piggy. Inside me: HK$8,000 — Mia's ENTIRE semester of living money.", zh: "嗨，我是 Piggy。我肚子里装着港币 8,000 元——Mia 整个学期的生活费。" }, t: 3.3 },
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "New city, new uni, new me. What could possibly go wrong?", zh: "新城市，新大学，全新的我。能出什么问题呢？" }, t: 7.4 },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "...Famous last words.", zh: "……这话听着就不妙。" }, t: 13.5 }
     ],
     next: "c1"
   },
