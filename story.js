@@ -42,8 +42,8 @@ const STORY = {
     scene: { emoji: "🛏️📱✨", bg: "linear-gradient(135deg,#2b2d5c,#6b5fa8)", tag: { en: "Day 3 · 11:47 PM", zh: "第 3 天 · 晚上 11:47" } },
     phone: { kind: "sms", from: { en: "+852 5•••• ••••", zh: "+852 5•••• ••••" }, text: { en: "Hi dear 😊 Part-time job! Like videos from home, earn HK$800/day. No experience needed. Add Kelly on WhatsApp — only 5 spots left!", zh: "亲 😊 招兼职！在家给视频点赞，日赚港币 800 元，无需经验。WhatsApp 加 Kelly——只剩 5 个名额！" } },
     lines: [
-      { who: { en: "Mia", zh: "Mia" }, text: { en: "HK$800 a DAY?! That's rent money!", zh: "一天港币 800 元？！够交房租了！" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "That's also... suspiciously a lot of money for pressing a heart button.", zh: "只是点个爱心就赚这么多……可疑得很。" } }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "HK$800 a DAY?! That's rent money!", zh: "一天港币 800 元？！够交房租了！" }, t: 2.6 },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "That's also... suspiciously a lot of money for pressing a heart button.", zh: "只是点个爱心就赚这么多……可疑得很。" }, t: 7.1 }
     ],
     redFlags: [{ en: "A stranger offers you a job out of nowhere", zh: "陌生人主动给你介绍工作" }, { en: "Pay is way too high for too little work", zh: "工作量很少，报酬却高得离谱" }, { en: "Fake urgency: \"only 5 spots left\"", zh: "“只剩 5 个名额”制造虚假紧迫感" }, { en: "Pushes you to a private chat app", zh: "催你转到私人聊天软件" }],
     choices: [
