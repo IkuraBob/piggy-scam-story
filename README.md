@@ -73,3 +73,6 @@ Still to verify: final video/MP3 assets, audible mix with real narration, iOS Sa
 and Android Chrome on physical devices, and the published site after approval to
 push. Existing story wording says Piggy is empty in Face Swapped, although some
 routes retain money; the original text and balance rules have been preserved.
+
+
+2026-11-09：c3 已采用组员确认的 v1 画面与 ElevenLabs 妈妈配音（1.28 倍速），字幕时间同步更新。详见 [c3 制作与验证记录](planning/c3-production.md)。

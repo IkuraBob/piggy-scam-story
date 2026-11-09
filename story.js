@@ -199,13 +199,13 @@ const STORY = {
 
   // ---------------- Chapter 3 · Deepfake ----------------
   c3: {
-    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "Mom? At 2 AM?", zh: "妈妈？凌晨两点？" }, kind: "video", media: null, pos: [9, 1],
+    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "Mom? At 2 AM?", zh: "妈妈？凌晨两点？" }, kind: "video", media: "media/c3.mp4", pos: [9, 1],
     scene: { emoji: "🌙📹👩‍🦳", bg: "linear-gradient(135deg,#1f2340,#454a7a)", tag: { en: "Week 5 · 2:03 AM", zh: "第 5 周 · 凌晨 2:03" }, glitch: true },
     phone: { kind: "call", from: { en: "Mom ❤️ (new account)", zh: "妈妈 ❤️（新账号）" }, text: { en: "Video call", zh: "视频通话" } },
     lines: [
-      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Sweetie, my phone broke. Grandpa's in hospital — send HK$4,000 to Auntie's account NOW.", zh: "宝贝，我手机坏了。外公住院了——马上转港币 4,000 元到阿姨的账户。" } },
-      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Don't call Dad. Hurry!", zh: "别打给爸爸。快点！" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Why does Mom blink like a screensaver?", zh: "妈妈眨眼怎么像屏幕保护程序？" } }
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Sweetie, my phone broke. Grandpa's in hospital — send HK$4,000 to Auntie's account now.", zh: "宝贝，我手机坏了。外公住院了——马上转港币 4,000 元到阿姨的账户。" }, t: 2.1 },
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "Don't call Dad. Hurry!", zh: "别打给爸爸。快点！" }, t: 7.9 },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Why does Mom blink like a screensaver?", zh: "妈妈眨眼怎么像屏幕保护程序？" }, t: 9.6 }
     ],
     redFlags: [{ en: "A brand-new account", zh: "全新的账号" }, { en: "Money, urgently, at 2 AM", zh: "凌晨两点急着要钱" }, { en: "Stops you checking with other family", zh: "阻止你找其他家人核实" }, { en: "Glitches: lip-sync, blinking, blurry face edges", zh: "画面破绽：口型、眨眼和模糊的脸部边缘" }, { en: "Pay to a third-party account", zh: "要求转账到第三方账户" }],
     choices: [
