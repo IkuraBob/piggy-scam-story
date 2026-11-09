@@ -189,9 +189,9 @@ const STORY = {
     enter: { money: +3000, recovered: true },
     phone: { kind: "call", from: { en: "Anti-Scam Helpline 18222", zh: "防骗易热线 18222" }, text: { en: "Connected", zh: "已接通" } },
     lines: [
-      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "It's a fake-official scam. Next, they'd fake your kidnapping to get ransom from your parents.", zh: "这是冒充官员诈骗。下一步，他们会伪造你被绑架，向你父母勒索赎金。" } },
-      { who: { en: "Helpline", zh: "热线人员" }, text: { en: "Your HK$3,000 transfer is frozen.", zh: "你那笔港币 3,000 元的转账已被冻结。" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Never underestimate a nosy roommate.", zh: "永远别小看爱管闲事的室友。" } }
+      { t: 0.1, who: { en: "Helpline", zh: "热线人员" }, text: { en: "It's a fake-official scam. Next, they'd fake your kidnapping to get ransom from your parents.", zh: "这是冒充官员诈骗。下一步，他们会伪造你被绑架，向你父母勒索赎金。" } },
+      { t: 5.9, who: { en: "Helpline", zh: "热线人员" }, text: { en: "Your HK$3,000 transfer is frozen.", zh: "你那笔港币 3,000 元的转账已被冻结。" } },
+      { t: 9.3, who: { en: "Piggy", zh: "Piggy" }, text: { en: "Never underestimate a nosy roommate.", zh: "永远别小看爱管闲事的室友。" } }
     ],
     flag: { en: "Broke the secrecy & got help", zh: "打破保密要求，主动求助" },
     next: "c3"
