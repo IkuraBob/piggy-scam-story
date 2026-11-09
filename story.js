@@ -93,8 +93,8 @@ const STORY = {
     enter: { money: -1000, lost: true },
     phone: { kind: "chat", from: { en: "Kelly from HR 💼", zh: "人事部 Kelly 💼" }, text: { en: "Congrats! Commission HK$3,000 🎉 To withdraw, pay the account activation tax: HK$2,000.", zh: "恭喜！佣金港币 3,000 元 🎉 提现前请先支付账户激活税：港币 2,000 元。" } },
     lines: [
-      { who: { en: "Mia", zh: "Mia" }, text: { en: "Tax?! ...but if I stop now, I lose the thousand.", zh: "税？！……可我现在停手，那一千块就没了。" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "*faints* That's EXACTLY what they want you to think!", zh: "*晕倒* 他们就是想让你这么想！" } }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Tax?! ...but if I stop now, I lose the thousand.", zh: "税？！……可我现在停手，那一千块就没了。" }, t: 0.1 },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "*faints* That's EXACTLY what they want you to think!", zh: "*晕倒* 他们就是想让你这么想！" }, t: 7.0 }
     ],
     redFlags: [{ en: "The 'balance' on their site is just a number they typed", zh: "网站上的“余额”只是他们输入的数字" }, { en: "New fees keep appearing — that's the sunk-cost trap", zh: "新费用接连出现——这就是沉没成本陷阱" }],
     choices: [
