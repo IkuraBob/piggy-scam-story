@@ -172,9 +172,9 @@ const STORY = {
     scene: { emoji: "🧳🚪👀", bg: "linear-gradient(135deg,#3b2f63,#7a5a9e)", tag: { en: "Week 2 · 11:58 PM", zh: "第 2 周 · 晚上 11:58" } },
     enter: { money: -3000, lost: true },
     lines: [
-      { who: { en: "Narrator", zh: "旁白" }, text: { en: "Mia has already transferred HK$3,000 'for verification'.", zh: "Mia 已经转出港币 3,000 元“验资费”。" } },
-      { who: { en: "Wang (earpiece)", zh: "王警官（耳机里）" }, text: { en: "Say nothing. Walk.", zh: "什么都别说。走。" } },
-      { who: { en: "Jo", zh: "Jo" }, text: { en: "Where are you going with a suitcase at midnight??", zh: "大半夜拖着行李箱，你要去哪？？" } }
+      { t: 0.5, who: { en: "Narrator", zh: "旁白" }, text: { en: "Mia has already transferred HK$3,000 'for verification'.", zh: "Mia 已经转出港币 3,000 元“验资费”。" } },
+      { t: 6.4, who: { en: "Wang (earpiece)", zh: "王警官（耳机里）" }, text: { en: "Say nothing. Walk.", zh: "什么都别说。走。" } },
+      { t: 9.6, who: { en: "Jo", zh: "Jo" }, text: { en: "Where are you going with a suitcase at midnight??", zh: "大半夜拖着行李箱，你要去哪？？" } }
     ],
     redFlags: [{ en: "You're being told to lie to people who care about you", zh: "有人让你欺骗关心你的人" }, { en: "This is how 'virtual kidnapping' starts", zh: "“虚拟绑架”就是这样开始的" }],
     choices: [
