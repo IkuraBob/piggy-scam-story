@@ -227,13 +227,13 @@ const STORY = {
     branch: { ifLost: "end_comeback", else: "end_slayer" }
   },
   c3_sent: {
-    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "Ten Minutes Later", zh: "十分钟后" }, kind: "video", media: null, pos: [10, 2],
+    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "Ten Minutes Later", zh: "十分钟后" }, kind: "video", media: "media/c3_sent.mp4", pos: [10, 2],
     scene: { emoji: "💸📩😱", bg: "linear-gradient(135deg,#ffb3b3,#ffe0e0)", tag: { en: "Week 5 · 2:15 AM", zh: "第 5 周 · 凌晨 2:15" } },
     enter: { money: -4000, lost: true },
     phone: { kind: "sms", from: { en: "Mom (real number)", zh: "妈妈（原号码）" }, text: { en: "Why is Auntie asking if you're okay? I never called you.", zh: "阿姨怎么问起你有没有事？我没打过电话给你啊。" } },
     lines: [
-      { who: { en: "Mia", zh: "Mia" }, text: { en: "No. No no no.", zh: "不。不不不。" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Every minute counts now. Banks can freeze money — but only if you tell them FAST.", zh: "现在每一分钟都重要。银行可以冻结款项——但你得马上告诉他们。" } }
+      { t: 0.4, who: { en: "Mia", zh: "Mia" }, text: { en: "No. No no no.", zh: "不。不不不。" } },
+      { t: 3.9, who: { en: "Piggy", zh: "Piggy" }, text: { en: "Every minute counts now. Banks can freeze money — but only if you tell them FAST.", zh: "现在每一分钟都重要。银行可以冻结款项——但你得马上告诉他们。" } }
     ],
     redFlags: [{ en: "Feeling ashamed is normal — staying silent is what scammers count on", zh: "感到羞耻很正常——骗子就指望你保持沉默" }],
     choices: [
