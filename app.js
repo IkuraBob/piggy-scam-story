@@ -521,7 +521,7 @@
     const updateSound = () => { sound.textContent = PiggyAudio.muted ? "🔇" : "🔊"; sound.setAttribute("aria-label", PiggyAudio.muted ? ui("Unmute audio", "开启声音") : ui("Mute audio", "关闭声音")); sound.setAttribute("aria-pressed", String(!PiggyAudio.muted)); };
     updateSound();
     sound.onclick = () => { unlockAudio(); PiggyAudio.setMuted(!PiggyAudio.muted); player.muted = !PiggyAudio.unlocked || PiggyAudio.muted || narrationForClip; updateSound(); };
-    document.addEventListener("click", unlockAudio, { once: true, capture: true });
+    document.addEventListener("click", unlockAudio, { capture: true });
     $("pressure").onchange = () => {
       stopCountdown();
       if (!$("choiceOverlay").hidden) {

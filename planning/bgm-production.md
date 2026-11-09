@@ -40,3 +40,26 @@ and have short boundary fades. Existing 600 ms mood crossfades, 25% video duckin
 - Public deployment verification is recorded separately after pushing.
 Human listening approved the source tracks; final mixed playback and physical
 mobile devices have not been independently auditioned/tested by Codex.
+
+## Refresh / mute recovery · 2026-11-09
+
+User report: when the saved state is sound-on, refresh can leave BGM silent;
+when saved as muted, switching sound on after refresh makes it audible.
+The distinction between before and after the first click is still awaiting
+user clarification. A fresh page intentionally produces no audio before a gesture.
+
+A deterministic regression reproduced a recovery defect: when the browser rejects
+the first BGM play request, unmute retries play but leaves the track gain at zero.
+All play retries now restore the current ducked/normal gain. Regular clicks resume
+an interrupted AudioContext and retry paused BGM; revisiting the same mood can also
+retry. BGM muting uses master gain without toggling HTMLMediaElement.muted, avoiding
+an extra media-unmute transition. Video/narration mute behavior is unchanged.
+
+Validation: new blocked-play, retry, same-mood and stored-preference regressions
+pass with `tests/check.cjs` (40 paths / all balances). Browser diagnostics confirmed
+running context, advancing BGM time, master gain 0/1, and video duck gain 0.05
+for both saved-mute states after refresh. All four endings passed at 1280px and
+375px. Production layout has no horizontal overflow. Temporary diagnostic pages
+were removed and are not deployed. These checks are desktop browser evidence,
+not iOS/Android hardware confirmation; the user's phone symptom is not yet
+confirmed resolved.

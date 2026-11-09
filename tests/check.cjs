@@ -133,6 +133,39 @@ module.exports = (async()=>{
  audio.setMuted(true);assert.equal(gains[0].gain.value,0);audio.sfx('coin');assert.equal(tones.length,3);audio.setMuted(false);
  audio.stopVoice();assert.ok(voice.paused);assert.equal(audio.voiceActive,false);
  audios[2].onerror();audio.mood('ch2');await Promise.resolve();assert.equal(audios[3].src,'media/audio/bgm-ch2.mp3');
+ // Recovery after a browser rejects the first BGM play request.
+ audio.mood('ch3'); await Promise.resolve();
+ const retryTrack = audios.at(-1), retryGain = gains.at(-1);
+ audio.mood('home'); await Promise.resolve();
+ retryTrack.play = function () { this.paused = true; return Promise.reject(new Error('NotAllowedError')); };
+ audio.mood('ch3'); await Promise.resolve(); await Promise.resolve();
+ assert.equal(retryGain.gain.value,0);
+ retryTrack.play = function () { this.paused = false; return Promise.resolve(); };
+ audio.setMuted(true); audio.setMuted(false); await Promise.resolve();
+ assert.equal(retryTrack.paused,false,'Unmute retries blocked BGM');
+ assert.equal(retryGain.gain.value,.2,'Unmute restores gain after blocked BGM playback');
+ // Later gestures resume interrupted audio and retry the same mood.
+ retryTrack.paused = true; retryGain.gain.value = 0;
+ audio.unlock(); await Promise.resolve();
+ assert.equal(retryTrack.paused,false,'A new gesture retries current music');
+ assert.equal(retryGain.gain.value,.2);
+ retryTrack.paused = true; retryGain.gain.value = 0;
+ audio.mood('ch3'); await Promise.resolve();
+ assert.equal(retryGain.gain.value,.2,'Same mood can recover after a blocked play');
+ audio.setMuted(true);
+ assert.notEqual(retryTrack.muted,true,'BGM mute uses master gain, not media unmute');
+ assert.equal(gains[0].gain.value,0);
+ // Stored preferences must never cause playback before a gesture on a fresh page.
+ for (const stored of ['true','false']) {
+   const before = audios.length;
+   const fresh = vm.runInNewContext(read('audio.js')+'; PiggyAudio',
+     {...sandbox,localStorage:{getItem(){return stored;},setItem(){}}});
+   fresh.mood('home'); assert.equal(audios.length,before+1);
+   assert.equal(fresh.unlocked,false);
+   fresh.unlock(); fresh.mood('home'); await Promise.resolve();
+   assert.equal(audios.at(-1).paused,false);
+   assert.equal(fresh.muted,stored==='true');
+ }
  const result = {syntax:'pass',storyPaths:paths,endings:[...endings].map(([id,money])=>({id,balances:[...money].sort((a,b)=>a-b)})),bilingualText:'pass',videoWordCounts,subtitleClocks:'pass',security:'pass',audioLifecycle:'pass',videoSoundtrack:'pass'};
  if(require.main===module)console.log(JSON.stringify(result,null,2));
  return result;

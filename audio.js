@@ -29,14 +29,17 @@ const PiggyAudio = (() => {
         unlocked = true;
       } catch { return; }
     }
-    context.resume().catch(() => {});
+    if (context.state !== 'running') context.resume().catch(() => {});
+    // A fresh page needs a gesture even when the stored preference is sound-on.
+    // Retry a track interrupted or blocked by the browser without restarting it.
+    if (currentTrack?.audio.paused) playMusic(currentTrack);
   }
   function setMuted(value) {
     muted = value; voice.muted = value;
-    tracks.forEach(track => { track.audio.muted = value; });
+    // BGM is muted through master gain only, avoiding media unmute autoplay rules.
     ramp(master, muted ? 0 : 1, .16);
     try { localStorage.setItem('piggy.muted', String(muted)); } catch {}
-    if (!muted && currentTrack && !currentTrack.failed) currentTrack.audio.play().catch(() => {});
+    if (!muted && currentTrack) playMusic(currentTrack);
   }
   function musicLevel() { return voiceActive ? .06 : videoPlaying ? .05 : .2; }
   function duck(on) {
@@ -47,8 +50,18 @@ const PiggyAudio = (() => {
     videoPlaying = !!on;
     if (currentTrack) ramp(currentTrack.gain, musicLevel(), .32);
   }
+  function playMusic(track) {
+    if (!unlocked || track.failed) return;
+    track.audio.play().then(() => {
+      if (currentTrack === track) ramp(track.gain, musicLevel());
+    }).catch(() => {}); // A later user gesture retries blocked playback.
+  }
   function mood(name) {
-    if (!unlocked || name === currentMood) return;
+    if (!unlocked) return;
+    if (name === currentMood) {
+      if (currentTrack?.audio.paused) playMusic(currentTrack);
+      return;
+    }
     currentMood = name;
     const previous = currentTrack;
     if (previous) {
@@ -58,7 +71,7 @@ const PiggyAudio = (() => {
     }
     let track = tracks.get(name);
     if (!track) {
-      const audio = new Audio(); audio.loop = true; audio.preload = 'auto'; audio.muted = muted;
+      const audio = new Audio(); audio.loop = true; audio.preload = 'auto';
       const gain = context.createGain(); gain.gain.value = 0; gain.connect(master);
       context.createMediaElementSource(audio).connect(gain);
       track = { audio, gain, failed: false };
@@ -67,9 +80,7 @@ const PiggyAudio = (() => {
       tracks.set(name, track);
     }
     currentTrack = track; clearTimeout(track.stop);
-    if (!track.failed) {
-      track.audio.play().then(() => { if (currentTrack === track) ramp(track.gain, musicLevel()); }).catch(() => {});
-    }
+    playMusic(track);
   }
   function stopVoice() {
     voiceVersion++; voice.pause(); voice.onended = voice.onerror = voice.onloadedmetadata = null;
