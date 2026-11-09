@@ -1,0 +1,116 @@
+{
+  "tool": "built-in image generation",
+  "date": "2026-11-09",
+  "videoGenerations": 14,
+  "stillGenerations": 14,
+  "items": [
+    {
+      "id": "c1_safe",
+      "refs": [
+        "ref-mia-anime-portrait.png",
+        "ref-dorm-anime-night.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark.\nNight, Mia (yellow hoodie, no backpack) in bed proudly tapping her phone (screen away) to block a number; the pink piggy bank on the desk beams with proud teary sparkly eyes, a few tiny gold coin \"tears\".\nUse reference 1 for Mia identity, round glasses, bob haircut and yellow hoodie, but omit her backpack. Reference 2 is the exact dorm layout and night lighting. Reference 3 is Piggy identity and proportions. One Mia and one Piggy only; replace the small existing piggy in the dorm reference with this expressive Piggy, do not duplicate. Preserve Japanese slice-of-life anime, clean thin lineart and soft cel shading. Phone stays in Mia’s hands, its back facing the viewer; Piggy stays on the desk and faces the viewer. Compose a single cohesive scene, not panels. No subtitles or speech bubbles.\n",
+      "selectedVersion": 1,
+      "file": "media/c1_safe.jpg"
+    },
+    {
+      "id": "c1_check",
+      "refs": [
+        "ref-mia-anime-portrait.png",
+        "ref-dorm-anime-night.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Match locked character identities and dorm layout. Mia wears round glasses and mustard-yellow hoodie, no backpack. Exactly one Mia and one Piggy, replacing the piggy already in the room reference, no duplicates. No subtitles, speech bubbles, or readable book-spine lettering. Night, Mia at her desk under the lamp, laptop screen facing away from the viewer, mouth open in shock; the pink piggy bank beside her holding a tiny magnifying glass, alarmed. Piggy reacts toward the viewer. Only laptop back is visible.",
+      "revisionPrompt": "Edit image 1 (c1_check). Correct ONLY the desk orientation, using image 2 as exact room geometry reference. The desk stays against the RIGHT wall, its back edge beneath the shelves and lamp. Do not rotate the desk toward the middle of the room. Chair sits on room-facing side of that wall desk. Mia sits facing RIGHT toward the wall and laptop, seen in side/three-quarter profile with shocked open mouth. Laptop rests on this same desk facing Mia; show only its back or thin side, no readable screen. Preserve Mia identity, glasses, yellow hoodie without backpack, the single alarmed Piggy holding a tiny magnifying glass on the desk, night lighting, bed, window and overall anime style. No additional desk, no duplicates, no text. 16:9 landscape.",
+      "selectedVersion": 2,
+      "file": "media/c1_check.jpg"
+    },
+    {
+      "id": "c1_recover",
+      "refs": [
+        "ref-mia-anime-portrait.png",
+        "ref-dorm-anime-night.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Match locked character identities and dorm layout. Mia wears round glasses and mustard-yellow hoodie, no backpack. Exactly one Mia and one Piggy, replacing the piggy already in the room reference, no duplicates. No subtitles, speech bubbles, or readable book-spine lettering. Night, Mia sitting on the floor against the bed, phone to her ear, tired but determined; the pink piggy bank next to her with a small band-aid on its head. Phone screen not visible. Piggy is next to Mia on the floor, no second piggy on the desk.",
+      "revisionPrompt": "Edit image 1 only: recolor Mia’s charcoal grey trousers to medium denim blue jeans matching image 2, adjusted for warm night lighting. Preserve pose, folds, socks, phone call, face, hoodie, Piggy, band-aid, exact room and all other contents unchanged. Do not add backpack. 16:9.",
+      "selectedVersion": 2,
+      "file": "media/c1_recover.jpg"
+    },
+    {
+      "id": "c2_safe",
+      "refs": [
+        "ref-mia-anime-portrait.png",
+        "ref-jo-anime-fullbody.png",
+        "ref-dorm-anime-day.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Match locked character identities and dorm layout. Mia wears round glasses and mustard-yellow hoodie, no backpack. Exactly one Mia and one Piggy, replacing the piggy already in the room reference, no duplicates. No subtitles, speech bubbles, or readable book-spine lettering. Bright morning, Mia puts her phone face-down on the desk with a confident smile; Jo (blue messy bob, grey star pajamas) in the background eating cereal from a bowl and rolling her eyes; the pink piggy bank on the desk wears tiny sunglasses. Jo is the only additional person, match her own reference. One phone only, screen down.",
+      "revisionPrompt": null,
+      "selectedVersion": 1,
+      "file": "media/c2_safe.jpg"
+    },
+    {
+      "id": "c2_crack",
+      "refs": [
+        "ref-mia-anime-portrait.png",
+        "ref-dorm-anime-day.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Match locked character identities and dorm layout. Mia wears round glasses and mustard-yellow hoodie, no backpack. Exactly one Mia and one Piggy, replacing the piggy already in the room reference, no duplicates. No subtitles, speech bubbles, or readable book-spine lettering. Bright morning, Mia holds her phone at arm’s length (screen facing away from viewer), unimpressed smirk; her free arm folds across her torso supporting the extended arm, a natural two-arm pose. The pink piggy bank on the desk smirks toward the viewer too. No phone near Piggy, one phone held by Mia only.",
+      "revisionPrompt": null,
+      "selectedVersion": 1,
+      "file": "media/c2_crack.jpg"
+    },
+    {
+      "id": "end_slayer",
+      "refs": [
+        "ref-mia-anime-portrait.png",
+        "ref-dorm-anime-day.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Match locked character identities and dorm layout. Mia wears round glasses and mustard-yellow hoodie, no backpack. Exactly one Mia and one Piggy, replacing the piggy already in the room reference, no duplicates. No subtitles, speech bubbles, or readable book-spine lettering. End of semester, sunny room with packed boxes, Mia cheering; a chubby pink piggy bank in sunglasses sitting on a small pile of gold coins on the desk. Preserve exact room geometry: bed on left, window rear, desk against RIGHT wall, never rotated into center. Single image, joyful victorious ending.",
+      "revisionPrompt": "Edit image 1 only. Change ONLY Mia’s visible trousers from pale beige to the medium denim BLUE of the jeans in image 2 (fullbody character reference). Keep the original trouser folds, shape, pose and framing; recolor only the trousers. All other image 1 pixels/content should remain as close to original as possible: exact face, glasses, hair, yellow hoodie, character poses, Piggy, room, props, lighting, composition. Do not copy the backpack from image 2. Do not change Jo’s grey star pajamas if present. Preserve landscape 16:9 and no text.",
+      "selectedVersion": 2,
+      "file": "media/end_slayer.jpg"
+    },
+    {
+      "id": "end_comeback",
+      "refs": [
+        "ref-mia-anime-portrait.png",
+        "ref-jo-anime-fullbody.png",
+        "ref-dorm-anime-day.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Match locked character identities and dorm layout. Mia wears round glasses and mustard-yellow hoodie, no backpack. Exactly one Mia and one Piggy, replacing the piggy already in the room reference, no duplicates. No subtitles, speech bubbles, or readable book-spine lettering. End of semester, Mia and Jo grinning side by side in the sunny dorm; the pink piggy bank, a bit slimmer, with a band-aid on its head, giving a thumbs-up with its hoof on the desk. Jo is the only additional person, blue messy bob and grey star pajamas exactly matching her reference. Preserve exact room geometry: bed left, window rear, desk against RIGHT wall, not rotated into center. Warm relieved hopeful ending.",
+      "revisionPrompt": "Edit image 1 only. Change ONLY Mia’s visible trousers from pale beige to the medium denim BLUE of the jeans in image 2 (fullbody character reference). Keep the original trouser folds, shape, pose and framing; recolor only the trousers. All other image 1 pixels/content should remain as close to original as possible: exact face, glasses, hair, yellow hoodie, character poses, Piggy, room, props, lighting, composition. Do not copy the backpack from image 2. Do not change Jo’s grey star pajamas if present. Preserve landscape 16:9 and no text.",
+      "selectedVersion": 2,
+      "file": "media/end_comeback.jpg"
+    },
+    {
+      "id": "end_dark",
+      "refs": [
+        "ref-dorm-anime-night.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Moonlit empty dorm room, Mia’s bed untouched, suitcase gone, her phone lying dark on the floor; the pink piggy bank alone on the desk, small and sad. Quiet and lonely, not scary, NO PEOPLE. Preserve exact room geometry from reference: bed left, window rear, desk against RIGHT wall, never rotated into center. One Piggy only, replacing the room-reference piggy, with the design from character reference. Dark blue night lighting, lamp and string lights off. No readable lettering or screen content, no speech bubbles.",
+      "revisionPrompt": null,
+      "selectedVersion": 1,
+      "file": "media/end_dark.jpg"
+    },
+    {
+      "id": "end_faceswap",
+      "refs": [
+        "ref-mia-anime-fullbody.png",
+        "ref-dorm-anime-night.png",
+        "ref-piggy-anime.png"
+      ],
+      "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Dark room, Mia sitting alone on her bed hugging her knees, phone face-down beside her; the pink piggy bank lying on its side on the desk, thinner, dull eyes. Sad, not scary. Mia exactly matches reference: bob haircut, round glasses, mustard-yellow hoodie, BLUE DENIM JEANS matching fullbody reference, NO BACKPACK. One Mia and one Piggy only. Preserve exact room geometry: bed left, window rear, desk against RIGHT wall, not rotated into center. Cool dark night lighting, no readable lettering or screen content, no speech bubbles.",
+      "revisionPrompt": "Edit this image only in the Piggy area on the right-hand desk. The single pink piggy bank must be lying ON ITS SIDE, tipped over sideways on the desk with its four legs pointing sideways, dull sad open eyes, slightly thinner body. Keep it intact, not broken or injured. Preserve exactly the rest of the image: Mia curled up on bed, her blue jeans, glasses and hoodie, phone, room, camera, night light and furniture. No other changes, no extra pig, no text. 16:9.",
+      "selectedVersion": 2,
+      "file": "media/end_faceswap.jpg"
+    }
+  ]
+}
