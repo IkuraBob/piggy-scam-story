@@ -215,13 +215,13 @@ const STORY = {
     timeoutTo: "c3_sent"
   },
   c3_verify: {
-    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "The Dog Question", zh: "关于小狗的问题" }, kind: "video", media: null, pos: [10, 0],
+    chapter: { en: "Ch.3 Mom's Video Call", zh: "第三章 · 妈妈的视频通话" }, title: { en: "The Dog Question", zh: "关于小狗的问题" }, kind: "video", media: "media/c3_verify.mp4", pos: [10, 0],
     scene: { emoji: "🐶❓👩‍🦳", bg: "linear-gradient(135deg,#ffe6f0,#fff5e6)", tag: { en: "Week 5 · 2:05 AM", zh: "第 5 周 · 凌晨 2:05" } },
     lines: [
-      { who: { en: "Mia", zh: "Mia" }, text: { en: "Mom, what was our first dog's name?", zh: "妈，我们家第一只狗叫什么？" } },
-      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "No time for g-g-games! *call dropped*", zh: "没时间玩、玩游戏！*通话断开*" } },
-      { who: { en: "Real Mom", zh: "真正的妈妈" }, text: { en: "Mia? It's 2 AM. Grandpa's fine — he's snoring next door.", zh: "Mia？凌晨两点了。外公没事——他在隔壁房间打呼噜呢。" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "AI can copy a face. Not your memories.", zh: "AI 能复制脸，复制不了回忆。" } }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Mom, what was our first dog's name?", zh: "妈，我们家第一只狗叫什么？" }, t: 0.4 },
+      { who: { en: "Mom?", zh: "妈妈？" }, text: { en: "No time for g-g-games! *call dropped*", zh: "没时间玩、玩游戏！*通话断开*" }, t: 2.7 },
+      { who: { en: "Real Mom", zh: "真正的妈妈" }, text: { en: "Mia? It's 2 AM. Grandpa's fine — he's snoring next door.", zh: "Mia？凌晨两点了。外公没事——他在隔壁房间打呼噜呢。" }, t: 5.9 },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "AI can copy a face. Not your memories.", zh: "AI 能复制脸，复制不了回忆。" }, t: 12.2 }
     ],
     flag: { en: "Beat a deepfake with a secret question", zh: "用共同记忆的问题识破深伪" },
     branch: { ifLost: "end_comeback", else: "end_slayer" }
