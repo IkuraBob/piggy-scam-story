@@ -66,8 +66,8 @@ const STORY = {
     enter: { money: +50 },
     phone: { kind: "chat", from: { en: "Kelly from HR 💼", zh: "人事部 Kelly 💼" }, text: { en: "You're a star 💕 HK$50 sent! Now join our VIP Task Group: deposit HK$1,000, earn HK$3,000 commission tonight!", zh: "你太棒了 💕 港币 50 元已到账！现在加入 VIP 任务群：先存港币 1,000 元，今晚赚港币 3,000 元佣金！" } },
     lines: [
-      { who: { en: "Mia", zh: "Mia" }, text: { en: "Wait — she actually paid me fifty dollars!", zh: "等等——她真的给了我五十块！" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "She... did? Okay, maybe she's legit?", zh: "她……真给了？难道是正规的？" } }
+      { who: { en: "Mia", zh: "Mia" }, text: { en: "Wait — she actually paid me fifty dollars!", zh: "等等——她真的给了我五十块！" }, t: 2.8 },
+      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "She... did? Okay, maybe she's legit?", zh: "她……真给了？难道是正规的？" }, t: 6.9 }
     ],
     redFlags: [{ en: "A small real payout first — classic bait to build trust", zh: "先付一小笔真钱——用诱饵建立信任" }, { en: "You must PAY to EARN", zh: "想赚钱，却得先付钱" }, { en: "\"Commission tonight\" — rushing you again", zh: "“今晚拿佣金”——又在催你" }],
     choices: [
