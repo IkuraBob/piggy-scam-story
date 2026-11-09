@@ -145,9 +145,9 @@ const STORY = {
     chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "The 'Safety Account'", zh: "所谓的“安全账户”" }, kind: "video", media: null, pos: [6, 2],
     scene: { emoji: "👮🏨🔒", bg: "linear-gradient(135deg,#7f8fb3,#b9c3db)", tag: { en: "Week 2 · 10:02 AM", zh: "第 2 周 · 上午 10:02" } },
     lines: [
-      { who: { en: "Wang", zh: "王警官" }, text: { en: "Prove your innocence: move your money to our 'safety account'.", zh: "要证明清白，就把钱转到我们的\"安全账户\"。" } },
-      { who: { en: "Wang", zh: "王警官" }, text: { en: "Then stay in a hotel. Alone. Tell no one.", zh: "然后去酒店住。一个人。谁也别告诉。" } },
-      { who: { en: "Piggy", zh: "Piggy" }, text: { en: "Why does a policeman want ME?", zh: "警察为什么要我？" } }
+      { t: 0.0, who: { en: "Wang", zh: "王警官" }, text: { en: "Prove your innocence: move your money to our 'safety account'.", zh: "要证明清白，就把钱转到我们的\"安全账户\"。" } },
+      { t: 4.0, who: { en: "Wang", zh: "王警官" }, text: { en: "Then stay in a hotel. Alone. Tell no one.", zh: "然后去酒店住。一个人。谁也别告诉。" } },
+      { t: 9.6, who: { en: "Piggy", zh: "Piggy" }, text: { en: "Why does a policeman want ME?", zh: "警察为什么要我？" } }
     ],
     redFlags: [{ en: "Police never hold your money in a 'safety account'", zh: "警方不会用“安全账户”保管你的钱" }, { en: "Isolating you from family and friends", zh: "让你与亲友隔绝" }, { en: "Fear + secrecy = scam", zh: "恐惧加保密，就是骗局" }],
     choices: [
