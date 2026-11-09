@@ -53,7 +53,7 @@ const STORY = {
     timeoutTo: "c1_hook"
   },
   c1_safe: {
-    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "Blocked!", zh: "已拉黑！" }, kind: "image", media: null, pos: [2, 0],
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "Blocked!", zh: "已拉黑！" }, kind: "image", media: "media/c1_safe.jpg", pos: [2, 0],
     scene: { emoji: "🛡️🐷💖", bg: "linear-gradient(135deg,#c8f7dc,#e6fff2)", tag: { en: "Day 3 · 11:49 PM", zh: "第 3 天 · 晚上 11:49" } },
     phone: { kind: "scan", from: { en: "Scameter check", zh: "防骗视伏器查询" }, text: { en: "⚠️ HIGH RISK — number reported for job scams", zh: "⚠️ 高风险——该号码曾被举报涉及求职诈骗" } },
     lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "Look at you! Delete, block, report. I'm so proud I could cry coins.", zh: "看看你！删除、拉黑、举报。我骄傲得都快哭出硬币了。" } }],
@@ -77,7 +77,7 @@ const STORY = {
     timeoutTo: "c1_trap"
   },
   c1_check: {
-    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "37 Reports", zh: "37 次举报" }, kind: "image", media: null, pos: [3, 1],
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "37 Reports", zh: "37 次举报" }, kind: "image", media: "media/c1_check.jpg", pos: [3, 1],
     scene: { emoji: "🔍🚨🐷", bg: "linear-gradient(135deg,#d7ecff,#f0f7ff)", tag: { en: "Day 4 · 12:03 AM", zh: "第 4 天 · 凌晨 12:03" } },
     phone: { kind: "scan", from: { en: "Scameter check", zh: "防骗视伏器查询" }, text: { en: "⚠️ Reported 37 times — Employment fraud", zh: "⚠️ 已被举报 37 次——求职诈骗" } },
     lines: [
@@ -104,7 +104,7 @@ const STORY = {
     timeoutTo: "c1_recover"
   },
   c1_recover: {
-    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "Calling 18222", zh: "拨打 18222" }, kind: "image", media: null, pos: [4, 2],
+    chapter: { en: "Ch.1 The Dream Job", zh: "第一章 · 梦想兼职" }, title: { en: "Calling 18222", zh: "拨打 18222" }, kind: "image", media: "media/c1_recover.jpg", pos: [4, 2],
     scene: { emoji: "☎️🩹🐷", bg: "linear-gradient(135deg,#e3dcff,#f6f2ff)", tag: { en: "Day 4 · 12:31 AM", zh: "第 4 天 · 凌晨 12:31" } },
     phone: { kind: "call", from: { en: "Anti-Scam Helpline 18222", zh: "防骗易热线 18222" }, text: { en: "Connected", zh: "已接通" } },
     lines: [
@@ -132,7 +132,7 @@ const STORY = {
     timeoutTo: "c2_deep"
   },
   c2_safe: {
-    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Hung Up", zh: "挂断了" }, kind: "image", media: null, pos: [6, 0],
+    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Hung Up", zh: "挂断了" }, kind: "image", media: "media/c2_safe.jpg", pos: [6, 0],
     scene: { emoji: "📵😎🐷", bg: "linear-gradient(135deg,#c8f7dc,#e6fff2)", tag: { en: "Week 2 · 9:20 AM", zh: "第 2 周 · 上午 9:20" } },
     lines: [
       { who: { en: "Helpline", zh: "热线人员" }, text: { en: "Real police never ask you to keep it secret, transfer money, or show a warrant by video call.", zh: "真正的警察不会要求你保密、转账，或通过视频通话出示通缉令。" } },
@@ -157,7 +157,7 @@ const STORY = {
     timeoutTo: "c2_door"
   },
   c2_crack: {
-    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Vibe Check Failed", zh: "露馅了" }, kind: "image", media: null, pos: [7, 1],
+    chapter: { en: "Ch.2 The Officer Calls", zh: "第二章 · 警官来电" }, title: { en: "Vibe Check Failed", zh: "露馅了" }, kind: "image", media: "media/c2_crack.jpg", pos: [7, 1],
     scene: { emoji: "😡📴🐷", bg: "linear-gradient(135deg,#ffe0b3,#fff3e0)", tag: { en: "Week 2 · 10:05 AM", zh: "第 2 周 · 上午 10:05" } },
     lines: [
       { who: { en: "Wang", zh: "王警官" }, text: { en: "You DARE question me?! *click*", zh: "你敢质疑我？！*挂断*" } },
@@ -245,25 +245,25 @@ const STORY = {
 
   // ---------------- Endings ----------------
   end_slayer: {
-    chapter: { en: "Ending", zh: "结局" }, title: { en: "Scam Slayer", zh: "骗局终结者" }, kind: "image", media: null, pos: [11, 0],
+    chapter: { en: "Ending", zh: "结局" }, title: { en: "Scam Slayer", zh: "骗局终结者" }, kind: "image", media: "media/end_slayer.jpg", pos: [11, 0],
     scene: { emoji: "🐷🕶️🏆", bg: "linear-gradient(135deg,#fff1a8,#ffd6e7)", tag: { en: "End of semester", zh: "学期结束" } },
     lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "Still chubby. Still rich. Best semester ever.", zh: "还是圆滚滚的，还是有钱。最棒的一个学期。" } }],
     ending: { badge: "🛡️", good: true, title: { en: "SCAM SLAYER", zh: "骗局终结者" }, text: { en: "You spotted every trick. Now send this to the friend who clicks every link.", zh: "你识破了每个圈套。现在把这个故事发给那个见链接就点的朋友。" } }
   },
   end_comeback: {
-    chapter: { en: "Ending", zh: "结局" }, title: { en: "Comeback Kid", zh: "及时止损者" }, kind: "image", media: null, pos: [11, 1],
+    chapter: { en: "Ending", zh: "结局" }, title: { en: "Comeback Kid", zh: "及时止损者" }, kind: "image", media: "media/end_comeback.jpg", pos: [11, 1],
     scene: { emoji: "🐷🩹👍", bg: "linear-gradient(135deg,#d6f5ff,#ffe6f0)", tag: { en: "End of semester", zh: "学期结束" } },
     lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "A little lighter. A lot wiser.", zh: "轻了一点。也聪明了很多。" } }],
     ending: { badge: "🔁", good: true, title: { en: "COMEBACK KID", zh: "及时止损者" }, text: { en: "You got hooked — but you stopped, spoke up and reported. That's how money gets saved: fast action, no shame.", zh: "你上过钩，但你停了手、说了出来，也报了案。保住钱靠的就是及时行动，不必羞于求助。" } }
   },
   end_dark: {
-    chapter: { en: "Ending", zh: "结局" }, title: { en: "Gone Dark", zh: "失联" }, kind: "image", media: null, pos: [8, 3],
+    chapter: { en: "Ending", zh: "结局" }, title: { en: "Gone Dark", zh: "失联" }, kind: "image", media: "media/end_dark.jpg", pos: [8, 3],
     scene: { emoji: "📱⬛😢", bg: "linear-gradient(135deg,#1a1a1a,#3a3a3a)", tag: { en: "Two days later", zh: "两天后" } },
     lines: [{ who: { en: "Narrator", zh: "旁白" }, text: { en: "Mia went silent. Two days later, her parents received a video of her 'kidnapped' — and a ransom demand.", zh: "Mia 失联了。两天后，她的父母收到她“被绑架”的视频，以及索要赎金的信息。" } }],
     ending: { badge: "🌑", good: false, title: { en: "GONE DARK", zh: "失联" }, text: { en: "Silence is a scammer's best friend. In real 'virtual kidnapping' cases, students were told to fake their own kidnapping. Tell someone. Always.", zh: "沉默是骗子最好的朋友。在真实的“虚拟绑架”案件中，学生曾被要求假装自己遭到绑架。一定要告诉别人。" }, rewind: "c2_door" }
   },
   end_faceswap: {
-    chapter: { en: "Ending", zh: "结局" }, title: { en: "Face Swapped", zh: "换脸陷阱" }, kind: "image", media: null, pos: [11, 3],
+    chapter: { en: "Ending", zh: "结局" }, title: { en: "Face Swapped", zh: "换脸陷阱" }, kind: "image", media: "media/end_faceswap.jpg", pos: [11, 3],
     scene: { emoji: "🎭🐷🕳️", bg: "linear-gradient(135deg,#3a2a4a,#6a4a6a)", tag: { en: "One week later", zh: "一周后" } },
     lines: [{ who: { en: "Piggy", zh: "Piggy" }, text: { en: "Four thousand dollars... gone. And Mia hasn't told a single soul.", zh: "四千块……没了。而 Mia 一个人都没告诉。" } }],
     ending: { badge: "🎭", good: false, title: { en: "FACE SWAPPED", zh: "换脸陷阱" }, text: { en: "A deepfake needs only seconds of a voice and a few selfies. Shame kept Mia quiet — and the money disappeared.", zh: "深伪只需要几秒语音和几张自拍。羞耻感让 Mia 保持沉默，钱也随之消失。" }, rewind: "c3_sent" }

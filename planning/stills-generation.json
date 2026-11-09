@@ -2,7 +2,7 @@
   "tool": "built-in image generation",
   "date": "2026-11-09",
   "videoGenerations": 14,
-  "stillGenerations": 14,
+  "stillGenerations": 16,
   "items": [
     {
       "id": "c1_safe",
@@ -109,8 +109,18 @@
       ],
       "prompt": "Same anime style as the reference images. 16:9 landscape. No readable text, no logo, no watermark. Japanese slice-of-life anime, clean thin lineart, soft cel shading. Dark room, Mia sitting alone on her bed hugging her knees, phone face-down beside her; the pink piggy bank lying on its side on the desk, thinner, dull eyes. Sad, not scary. Mia exactly matches reference: bob haircut, round glasses, mustard-yellow hoodie, BLUE DENIM JEANS matching fullbody reference, NO BACKPACK. One Mia and one Piggy only. Preserve exact room geometry: bed left, window rear, desk against RIGHT wall, not rotated into center. Cool dark night lighting, no readable lettering or screen content, no speech bubbles.",
       "revisionPrompt": "Edit this image only in the Piggy area on the right-hand desk. The single pink piggy bank must be lying ON ITS SIDE, tipped over sideways on the desk with its four legs pointing sideways, dull sad open eyes, slightly thinner body. Keep it intact, not broken or injured. Preserve exactly the rest of the image: Mia curled up on bed, her blue jeans, glasses and hoodie, phone, room, camera, night light and furniture. No other changes, no extra pig, no text. 16:9.",
-      "selectedVersion": 2,
-      "file": "media/end_faceswap.jpg"
+      "selectedVersion": 4,
+      "file": "media/end_faceswap.jpg",
+      "additionalRevisions": [
+        {
+          "version": 3,
+          "prompt": "Edit ONLY the small pink piggy bank on the right-hand desk in this exact image. It is lying on its side but appears to have only three legs. Correct its anatomy so FOUR separate short rounded pig legs/hooves are clearly visible and countable: a front pair and a rear pair, with a small visible gap between each leg, natural perspective for a piggy bank tipped onto its side. Keep its round coin-bank body, coin slot, pink color, dull sad open eyes, intact ceramic appearance and size on the desk. Do not add a tail-shaped leg; exactly four legs. Keep the entire rest of the image unchanged: Mia, bed, blue jeans, phone, room geometry, lighting, props, composition. No text. Landscape 16:9.\n"
+        },
+        {
+          "version": 4,
+          "prompt": "Edit ONLY Piggy, the small pink piggy bank on the right-hand desk. Replace its unnatural sideways pose with a natural upright resting pose: belly resting flat on the desk, four short legs tucked underneath the body in normal pig anatomy, head lowered slightly, dull sad open eyes. NOT lying on its side, NOT rolled over. Legs may be naturally hidden by its body; do not force all four into view. Match the same pink piggy-bank design, coin slot and scale; it is intact and quietly dejected, not injured. Preserve every other part of the image as closely as possible: Mia curled up on bed, blue jeans, yellow hoodie, glasses, phone face-down, room geometry, night lighting, framing. No text, no extra pig. Landscape 16:9.\n"
+        }
+      ]
     }
   ]
 }
