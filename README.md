@@ -81,3 +81,8 @@ dialogue/music mix remain outstanding.
 
 
 2026-11-09：c3 已采用组员确认的 v1 画面与 ElevenLabs 妈妈配音（1.28 倍速），字幕时间同步更新。详见 [c3 制作与验证记录](planning/c3-production.md)。
+
+## AI contributors
+
+- **OpenAI ChatGPT / Codex (coordinator)**: project coordination, writing and implementation support, verification, and deployment.
+- **Claude (Anthropic)**: front-end design and implementation.
