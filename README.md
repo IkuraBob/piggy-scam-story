@@ -86,3 +86,7 @@ dialogue/music mix remain outstanding.
 
 - **OpenAI ChatGPT / Codex (coordinator)**: project coordination, writing and implementation support, verification, and deployment.
 - **Claude (Anthropic)**: front-end design and implementation.
+
+## Ending quiz update (2026-11-11)
+
+The quiz now appears automatically after each ending clip, with three new bilingual scenario questions. Players can view the ending first and resume the quiz. See [behaviour and local verification](planning/quiz-update.md). This update is awaiting push approval.

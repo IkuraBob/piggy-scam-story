@@ -279,18 +279,18 @@ const HELP_LINES = [
 // Quiz content lives beside the story; it does not change story choices.
 const QUIZ = [
   {
-    question: { en: 'A task group pays you HK$50, then asks for a deposit. What should you do?', zh: '任务群先付给你港币 50 元，随后要求交押金。你会怎么做？' },
-    answers: [{ en: 'Pay to unlock the larger commission', zh: '付款，解锁更高佣金' }, { en: 'Stop and check before paying', zh: '停下来，付款前先核查' }], correct: 1,
-    explanation: { en: 'The small payout is bait. In Mia’s story, paying led to more invented fees.', zh: '小额付款是诱饵。在 Mia 的故事中，付款后又出现了更多编造的费用。' }
+    question: { en: 'A scholarship email gives you a “verification hotline”. You call it and they confirm the payment request. What is the weakness in this check?', zh: '奖学金邮件附有“核实热线”。你拨过去，对方确认了缴费要求。这次核实的问题在哪里？' },
+    answers: [{ en: 'The email and hotline could be controlled by the same person.', zh: '邮件和热线可能由同一个人控制。' }, { en: 'A phone call leaves no written proof; an email confirmation would settle it.', zh: '电话没有书面凭证；让对方发邮件确认就能解决。' }], correct: 0,
+    explanation: { en: 'Changing from email to phone does not make the source independent. Find the scholarship office through the university’s own website, not the contact details in the message.', zh: '从邮件换成电话，不代表换了独立来源。应从学校官网查找奖学金办公室，而不是继续使用这封邮件提供的联系方式。' }
   },
   {
-    question: { en: 'An “officer” demands secrecy and a transfer to a “safety account”. What next?', zh: '“警官”要求保密，并让你转账到“安全账户”。下一步呢？' },
-    answers: [{ en: 'Hang up, tell someone and call 18222', zh: '挂断电话，告诉他人并拨打 18222' }, { en: 'Cooperate quietly to clear your name', zh: '悄悄配合，证明自己清白' }], correct: 0,
-    explanation: { en: 'Secrecy isolates Mia. Telling Jo gives her a way to stop and seek help.', zh: '保密要求让 Mia 陷入孤立。告诉 Jo，让她有机会停下来并求助。' }
+    question: { en: 'A ticket seller has an old account and screenshots of happy buyers. A scam-check search finds no reports. Which conclusion is justified?', zh: '演出票卖家有多年账号，也有买家好评截图。防骗查询没有发现举报。哪种判断更合理？' },
+    answers: [{ en: 'These checks support each other, so a direct transfer is now reasonably safe.', zh: '几项检查互相印证，现在直接转账已经比较安全。' }, { en: 'There is no reported warning yet, but these checks do not verify this sale.', zh: '目前没有查到警示，但这些检查仍未证实这次交易可靠。' }], correct: 1,
+    explanation: { en: 'An old account can change hands, screenshots can be fabricated, and a new scam may have no reports. These clues do not establish that the seller has a valid ticket or will deliver it.', zh: '旧账号可能易主，截图可以伪造，新骗局也可能尚无人举报。这些线索不能证明卖家持有有效门票，或一定会交付。' }
   },
   {
-    question: { en: '“Mom” calls from a new account asking for urgent money. How do you verify?', zh: '“妈妈”用新账号来电，急着要钱。你如何核实？' },
-    answers: [{ en: 'Trust the familiar face on the screen', zh: '相信屏幕上熟悉的脸' }, { en: 'Call Mom’s known number before transferring', zh: '转账前先拨打妈妈原来的号码' }], correct: 1,
-    explanation: { en: 'Mia checks through Mom’s known number. A familiar face alone is not enough to verify a call.', zh: 'Mia 通过妈妈原来的号码核实。仅凭熟悉的脸，不能确认来电身份。' }
+    question: { en: 'Your roommate says, “I have already paid so much. If I stop now, it was all for nothing.” Which reply best helps them reconsider?', zh: '室友说：“我已经付了这么多，现在停下来，前面的钱不就白花了吗？”哪种回应更能帮助对方重新判断？' },
+    answers: [{ en: '“Set a smaller limit for the next payment so you can try once more.”', zh: '“下一笔设个更小的上限，这样还能再试一次。”' }, { en: '“If you had not paid anything yet, would the evidence convince you to pay now?”', zh: '“如果你之前一分钱也没付，现在这些证据足以说服你付款吗？”' }], correct: 1,
+    explanation: { en: 'Past spending does not make a new payment more likely to succeed. Separating the next decision from money already spent helps expose the pressure to keep paying. A smaller payment still adds to the loss.', zh: '过去花了多少钱，不会提高下一笔付款成功的可能性。把下一步决定和已付的钱分开看，才能看清“继续付才不亏”的压力；少付一笔仍会增加损失。' }
   }
 ];

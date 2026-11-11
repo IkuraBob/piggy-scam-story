@@ -23,7 +23,7 @@
   const tx = value => typeof value === "object" && value ? value[language] || value.en || "" : value;
   let language = "en";
   try { if (localStorage.getItem("piggy.language") === "zh") language = "zh"; } catch {}
-  let quizIndex = 0, quizScore = 0, quizAnswered = false, quizChoice = null;
+  let quizIndex = 0, quizScore = 0, quizAnswered = false, quizChoice = null, quizDismissed = false;
   const ui = (en, zh) => language === "zh" ? zh : en;
   function unlockAudio() { PiggyAudio.unlock(); }
   function localMedia(path) {
@@ -247,7 +247,7 @@
   function finishClip(n) {
     clearTimers(); show($("btnSkip"), false);
     $("progressBar").style.width = "100%";
-    if (n.ending) { quizIndex = quizScore = 0; quizAnswered = false; quizChoice = null; return showEnding(n); }
+    if (n.ending) { quizIndex = quizScore = 0; quizAnswered = false; quizChoice = null; quizDismissed = false; return showEnding(n); }
     if (n.choices) return showChoices(n);
     // auto-continue
     const target = n.branch ? (S.lost ? n.branch.ifLost : n.branch.else) : n.next;
@@ -328,6 +328,16 @@
     scr.className = "screen " + (e.good ? "good" : "bad");
     const unlocked = store.get();
     const card = $("endCard"); card.replaceChildren();
+    if (!quizDismissed && quizIndex < QUIZ.length) {
+      card.append(el("div", "small", `${tx(e.title)} · HK$${fmt(S.money)}`));
+      const quiz = el("section"); quiz.id = "quiz"; card.append(quiz);
+      const skip = el("button", "ghost", ui("View ending first", "先看结局"));
+      skip.onclick = () => { quizDismissed = true; showEnding(n); };
+      card.append(skip);
+      show(scr); renderQuiz();
+      return;
+    }
+
     const pig = el("img", "badge-pig");
     pig.src = `assets/piggy-${{end_slayer:"cool",end_comeback:"happy",end_dark:"fainted",end_faceswap:"broke"}[S.node] || "happy"}.svg`; pig.alt = "Piggy";
     const stats = el("div", "stats");
@@ -348,9 +358,10 @@
     button("btnShareCard", "ghost", ui("Save ending card", "保存结局卡片"));
     button("btnCopyLink", "ghost", ui("Copy story link", "复制故事链接"));
     card.append(help, routeBox, buttons);
-    const quiz = el("section", "help"); quiz.id = "quiz"; card.append(quiz);
+    const quiz = el("section", "help"); quiz.id = "quiz"; card.prepend(quiz);
     renderQuiz();
     show(scr);
+    scr.scrollTop = 0;
     if (e.rewind) $("btnRewind").onclick = () => rewindTo(e.rewind);
     $("btnRestart").onclick = restart;
     $("btnMap2").onclick = toggleMap;
@@ -370,13 +381,23 @@
   }
   function renderQuiz() {
     const box = $("quiz"); if (!box) return;
-    box.replaceChildren(el("h3", "", ui("Quick scam check", "防诈小测验")));
-    if (quizIndex >= QUIZ.length) {
-      box.append(el("p", "", ui(`Score: ${quizScore} / ${QUIZ.length}`, `得分：${quizScore} / ${QUIZ.length}`)));
-      const retry = el("button", "ghost", ui("Try the quiz again", "重新答题"));
-      retry.onclick = () => { quizIndex = quizScore = 0; quizAnswered = false; quizChoice = null; renderQuiz(); };
+    box.replaceChildren();
+    if (quizIndex >= QUIZ.length || quizDismissed) {
+      box.append(el("p", "", quizIndex >= QUIZ.length
+        ? ui(`Quiz score: ${quizScore} / ${QUIZ.length}`, `情境题得分：${quizScore} / ${QUIZ.length}`)
+        : ui("Try 3 new situations", "挑战 3 道新情境题")));
+      const retry = el("button", "ghost", quizIndex >= QUIZ.length ? ui("Try the quiz again", "重新答题") : ui("Continue quiz", "继续答题"));
+      retry.onclick = () => {
+        if (quizIndex >= QUIZ.length) { quizIndex = quizScore = 0; quizAnswered = false; quizChoice = null; }
+        quizDismissed = false; showEnding(STORY[S.node]);
+      };
       box.append(retry); return;
     }
+    const heading = el("h2", "", ui("Try a new situation", "换个情境，你会怎么判断？"));
+    heading.tabIndex = -1;
+    box.append(heading, el("p", "small", ui("3 questions · No timer · Your ending stays the same", "3 道情境题 · 不计时 · 不影响结局")));
+    heading.focus({ preventScroll: true });
+    $("endScreen").scrollTop = 0;
     const q = QUIZ[quizIndex]; box.append(el("p", "", `${quizIndex + 1}/${QUIZ.length} · ${tx(q.question)}`));
     const choices = el("div", "choices");
     q.answers.forEach((answer, i) => {
@@ -389,8 +410,8 @@
     box.append(choices);
     if (quizAnswered) {
       box.append(el("p", "", (quizChoice === q.correct ? ui("Correct. ", "答对了。") : ui("Review this clue: ", "留意这个线索：")) + tx(q.explanation)));
-      const next = el("button", "ghost", ui("Next", "下一题"));
-      next.onclick = () => { quizIndex++; quizAnswered = false; quizChoice = null; renderQuiz(); };
+      const next = el("button", "primary", quizIndex === QUIZ.length - 1 ? ui("See score & ending", "查看得分与结局") : ui("Next question", "下一题"));
+      next.onclick = () => { quizIndex++; quizAnswered = false; quizChoice = null; if (quizIndex >= QUIZ.length) showEnding(STORY[S.node]); else renderQuiz(); };
       box.append(next);
     }
   }
